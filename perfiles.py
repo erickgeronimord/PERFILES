@@ -216,10 +216,10 @@ def procesar_datos_detallados(df_eval):
     
     # Segmentación del equipo (como en tu código original)
     condiciones = [
-        (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] >= 4.5),
-        (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] < 4.5),
-        (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] >= 4.5),
-        (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] < 4.5)
+        (df_eval['puntaje_total'] >= 4.8) & (df_eval['potencial'] >= 4.8),
+        (df_eval['puntaje_total'] >= 4.1) & (df_eval['potencial'] < 2.9),
+        (df_eval['puntaje_total'] < 4.8) & (df_eval['potencial'] >= 2.9),
+        (df_eval['puntaje_total'] < 2.9) & (df_eval['potencial'] < 2.9)
     ]
     opciones = [
         "🟢 Alto Desempeño & Alto Potencial",
@@ -242,7 +242,7 @@ def mostrar_resumen_desempeno(vendedor_sel, df_eval):
     def obtener_color(puntaje):
         if puntaje >= 4.5:
             return "#2ecc71"  # Verde
-        elif puntaje >= 3.5:
+        elif puntaje >= 3.3:
             return "#f39c12"  # Naranja
         else:
             return "#e74c3c"  # Rojo
@@ -654,10 +654,10 @@ def procesar_datos(df_eval):
         
         # Segmentación del equipo
         condiciones = [
-            (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] >= 4.5),
-            (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] < 4.5),
-            (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] >= 4.5),
-            (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] < 4.5)
+            (df_eval['puntaje_total'] >= 4.8) & (df_eval['potencial'] >= 4.8),
+            (df_eval['puntaje_total'] >= 4.1) & (df_eval['potencial'] < 2.9),
+            (df_eval['puntaje_total'] < 4.8) & (df_eval['potencial'] >= 2.9),
+            (df_eval['puntaje_total'] < 2.9) & (df_eval['potencial'] < 2.9)
         ]
         opciones = [
             "🟢 Alto Desempeño & Alto Potencial",
@@ -710,7 +710,7 @@ def generar_alertas(df_eval, df_cump):
     
     # 2. Alertas por alto potencial sin plan
     if 'potencial' in df_eval.columns:
-        df_alto_potencial = df_eval[df_eval['potencial'] >= 4.5]
+        df_alto_potencial = df_eval[df_eval['potencial'] >= 4.8]
         for _, row in df_alto_potencial.iterrows():
             if pd.isna(row.get('plan_desarrollo', None)) or str(row.get('plan_desarrollo', '')).strip() == '':
                 alertas.append({
@@ -786,8 +786,8 @@ def generar_recomendaciones(vendedor, df_eval, categorias):
     recomendaciones = []
     
     # Umbrales para determinar necesidades
-    UMBRAL_CRITICO = 2
-    UMBRAL_MEJORA = 4
+    UMBRAL_CRITICO = 2.3
+    UMBRAL_MEJORA = 3.8
     
     for categoria, columnas in categorias.items():
         puntaje = datos[categoria]
@@ -927,7 +927,7 @@ def generar_pdf_perfil(vendedor, df_eval, df_seg, df_cump=None, df_info=None, ti
             if df_cump is not None and not df_cump.empty:
                 logros = df_cump[
                     (df_cump['vendedor'].str.upper() == vendedor.upper()) &
-                    (df_cump['cumplimiento_num'] > 0.8)
+                    (df_cump['cumplimiento_num'] > 0.95)
                 ].sort_values('fecha', ascending=False).head(3)
                 if not logros.empty:
                     pdf.set_font('', 'B', 14)
@@ -1095,10 +1095,10 @@ if vista == "Resumen Ejecutivo":
     for i, area in enumerate(categorias_lista[:mitad]):
         with cols_fila1[i]:
             promedio = avg_areas[area]
-            if promedio >= 4.5:
+            if promedio >= 4.8:
                 color = "green"
                 emoji = "✅"
-            elif promedio >= 3.5:
+            elif promedio >= 3.3:
                 color = "orange"
                 emoji = "⚠️"
             else:
@@ -1124,10 +1124,10 @@ if vista == "Resumen Ejecutivo":
     for i, area in enumerate(categorias_lista[mitad:]):
         with cols_fila2[i]:
             promedio = avg_areas[area]
-            if promedio >= 4.5:
+            if promedio >= 4.8:
                 color = "green"
                 emoji = "✅"
-            elif promedio >= 3.5:
+            elif promedio >= 3.3:
                 color = "orange"
                 emoji = "⚠️"
             else:
@@ -1455,7 +1455,7 @@ elif vista == "Individual":
         
         # Nueva sección: Potencial para supervisor
         st.subheader("🔍 Potencial para Supervisor")
-        potencial_supervisor = "Sí" if (eval_sel['potencial'] >= 4.5 and eval_sel['HABILIDADES'] >= 4.5) else "Con desarrollo" if (eval_sel['potencial'] >= 3.5) else "No"
+        potencial_supervisor = "Sí" if (eval_sel['potencial'] >= 4.8 and eval_sel['HABILIDADES'] >= 4.8) else "Con desarrollo" if (eval_sel['potencial'] >= 4) else "No"
         
         col_pot1, col_pot2 = st.columns(2)
         with col_pot1:
@@ -1497,10 +1497,10 @@ elif vista == "Individual":
 
         with cols_hr[2]:
             puntaje_total = eval_sel.get('puntaje_total', 0)
-            if puntaje_total >= 4.5:
+            if puntaje_total >= 4.8:
                 consistencia = "Alta"
                 color = "green"
-            elif puntaje_total >= 3.5:
+            elif puntaje_total >= 3.3:
                 consistencia = "Media"
                 color = "orange"
             else:
@@ -1511,10 +1511,10 @@ elif vista == "Individual":
 
         with cols_hr[3]:
             potencial = eval_sel.get('potencial', 0)
-            if potencial >= 4.5:
+            if potencial >= 4.8:
                 nivel_potencial = "Alto"
                 color = "green"
-            elif potencial >= 3.5:
+            elif potencial >= 3.3:
                 nivel_potencial = "Medio"
                 color = "orange"
             else:
@@ -1535,15 +1535,15 @@ elif vista == "Individual":
                 "Alineamiento Cultural"
             ],
             "Evaluación": [
-                "Alto" if puntaje_total >= 4.5 else "Medio" if puntaje_total >= 3.5 else "Bajo",
+                "Alto" if puntaje_total >= 4.8 else "Medio" if puntaje_total >= 3.3 else "Bajo",
                 nivel_potencial,
                 tendencia if 'tendencia' in locals() else "N/D",
                 consistencia,
                 "Alto"
             ],
             "Recomendación": [
-                "Mantener/Desarrollar" if puntaje_total >= 4.5 else "Capacitar" if puntaje_total >= 3.5 else "Revisar",
-                "Invertir en desarrollo" if potencial >= 4.5 else "Monitorear" if potencial >= 3.5 else "Limitar inversión",
+                "Mantener/Desarrollar" if puntaje_total >= 4.8 else "Capacitar" if puntaje_total >= 3.3 else "Revisar",
+                "Invertir en desarrollo" if potencial >= 4.8 else "Monitorear" if potencial >= 3.3 else "Limitar inversión",
                 "Reforzar positivamente" if 'tendencia' in locals() and tendencia == "↑ Mejorando" else "Intervenir",
                 "Estable" if consistencia == "Alta" else "Volátil",
                 "Retener"
@@ -1823,7 +1823,7 @@ elif vista == "Individual":
         # Sección de recomendaciones específicas
         st.markdown("### 📚 Recomendaciones Específicas de Formación")
         
-        if eval_sel['HABILIDADES'] < 2.9:
+        if eval_sel['HABILIDADES'] < 3.3:
             st.markdown("""
             #### 🧠 Habilidades Blandas
             - **Curso recomendado:** Comunicación Efectiva y Manejo de Objeciones
@@ -1832,7 +1832,7 @@ elif vista == "Individual":
             - **Objetivo:** Mejorar capacidad de escucha activa y manejo de objeciones
             """)
         
-        if eval_sel['CAPACIDAD DE AUTOGESTIÓN'] < 2.9:
+        if eval_sel['CAPACIDAD DE AUTOGESTIÓN'] < 3.3:
             st.markdown("""
             #### 🦅 Autonomía
             - **Curso recomendado:** Toma de Decisiones y Resolución de Problemas
@@ -1841,7 +1841,7 @@ elif vista == "Individual":
             - **Objetivo:** Desarrollar pensamiento crítico y autonomía
             """)
         
-        if eval_sel['HABILIDADES'] < 2.9:
+        if eval_sel['HABILIDADES'] < 3.3:
             st.markdown("""
             #### 💻 Herramientas Digitales
             - **Curso recomendado:** Dominio de Herramientas Comerciales
@@ -1911,18 +1911,18 @@ elif vista == "Individual":
                 "Plan de carrera"
             ],
             "Fecha": [
-                "Ene 2024",
-                "Feb-Mar 2024",
-                "Abr 2024",
-                "Jul 2024",
-                "Oct 2024"
+                "Pordefinir 2025",
+                "Pordefinir 2025",
+                "Pordefinir 2025",
+                "Pordefinir 2025",
+                "Pordefinir 2026"
             ],
             "Responsable": [
                 "RRHH",
-                "Capacitación",
-                "Supervisor",
+                "Gerencial Cocmercial",
+                "Supervisores",
                 "RRHH",
-                "Gerencia"
+                "Gerencial Cocmercial"
             ]
         }
 
@@ -2147,14 +2147,14 @@ else:  # Vista de Equipo
         
         with col_stats2:
             st.markdown("##### Recomendaciones Generales")
-            if stats_area["Promedio"] < 3.5:
+            if stats_area["Promedio"] < 2.3:
                 st.error("**Área crítica** que requiere intervención inmediata")
                 st.markdown("""
                 - Talleres intensivos para todo el equipo
                 - Acompañamiento cercano de supervisores
                 - Revisión de procesos y herramientas
                 """)
-            elif stats_area["Promedio"] < 4.5:
+            elif stats_area["Promedio"] < 3.7:
                 st.warning("**Área a mejorar** con oportunidades de crecimiento")
                 st.markdown("""
                 - Capacitaciones específicas
