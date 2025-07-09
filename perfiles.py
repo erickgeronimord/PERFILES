@@ -12,7 +12,7 @@ import unicodedata
 # CONFIGURACIÓN INICIAL
 # =============================================
 st.set_page_config(
-    page_title="Gestión Perfiles 360",
+    page_title="Gestión Comercial 360",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -87,34 +87,89 @@ if supervisor_col not in df_eval_orig.columns:
     st.stop()
 
 # Definición de categorías
-categorias = {
-    "Desempeño Comercial": [
+categorias_detalladas = {
+    "EFICACIA EN RUTA": [
+        "visita_todos_sus_clientes_por_dia?",
         "efectividad_real_vs_meta",
+        "eficiencia_en_tiempo_por_punto",
+        "sabe_priorizar_colmados_de_alto_volumen"
+    ],
+    "VENTA Y NEGOCIACIÓN": [
         "cumple_con_cuotas_de_venta_mensual",
+        "promueve_productos_nuevos/ofertas",
         "cierra_ventas_sin_depender_de_promociones",
-        "promueve_productos_nuevos/ofertas"
+        "manejo_de_objeciones_efectivas"
     ],
-    "Ejecución en Ruta": [
-        "visita_todos_sus_clientes_por_día?",
-        "puntualidad_y_asistencia",
-        "planea_su_ruta_diaria",
-        "eficiencia_en_tiempo_por_punto"
-    ],
-    "Habilidades Blandas": [
-        "respeto,_trato_cordial_y_empatía",
+    "RELACIÓN CON CLIENTES": [
+        "respeto,_trato_cordial_y_empatia",
         "gana_confianza_del_cliente",
         "soluciona_conflictos_con_criterio",
-        "clientes_solicitan_ser_visitados_por_él"
+        "clientes_solicitan_ser_visitados_por_el"
     ],
-    "Autonomía": [
+    "ORDEN Y EJECUCIÓN EN EL PUNTO DE VENTA": [
+        "reporta_faltantes_o_problemas_de_averias",
+        "toma_pedidos_bien_detallados",
+        "rectifica_pedido_al_cliente"
+    ],
+    "COMPORTAMIENTO Y ACTITUD": [
+        "puntualidad_y_asistencia",
+        "uso_correcto_del_uniforme",
+        "respeto_por_normas_y_procesos",
+        "compromiso_con_la_marca"
+    ],
+    "CAPACIDAD DE AUTOGESTIÓN": [
+        "planea_su_ruta_diaria",
         "soluciona_imprevistos_sin_llamar_al_supervisor",
-        "toma_la_iniciativa_sin_necesidad_de_ser_presionado",
-        "se_adapta_con_facilidad_a_cambios"
-    ],
-    "Herramientas": [
         "usa_adecuadamente_las_aplicaciones",
-        "reportes_y_formularios_sin_errores",
-        "mantiene_la_motocicleta_en_condiciones"
+        "reportes_y_formularios_sin_errores"
+    ],
+    "SEGURIDAD Y CONDUCCIÓN": [
+        "uso_de_casco_y_chaleco",
+        "conduce_de_forma_segura",
+        "mantiene_la_motocicleta_en_condiciones",
+        "respeta_las_normas_de_transito"
+    ],
+    "POTENCIAL DE DESARROLLO": [
+        "aprende_rapido",
+        "recibe_bien_el_feedback",
+        "tiene_liderazgo_informal_con_companeros",
+        "puede_escalar_a_rutas_de_alto_desempeno"
+    ],
+    "HABILIDADES": [
+        "se_comunica_con_claridad_al_presentar_productos_y_promociones.",
+        "sabe_negociar_condiciones_sin_depender_solo_de_descuentos.",
+        "recomienda_productos_adecuados_segun_el_perfil_del_cliente.",
+        "toma_pedidos_de_forma_precisa_y_sin_errores_frecuentes.",
+        "planifica_su_ruta_diaria_de_manera_logica_y_eficiente.",
+        "usa_correctamente_las_aplicaciones_moviles_o_herramientas_digitales_asignadas.",
+        "maneja_adecuadamente_su_tiempo_durante_las_visitas.",
+        "soluciona_situaciones_imprevistas_sin_necesidad_de_escalar_todo_al_supervisor.",
+        "detecta_oportunidades_de_venta_cruzada_u_otros_negocios.",
+        "mantiene_una_presentacion_personal_adecuada_(uniforme,_aseo,_porte)."
+    ],
+    "ACTITUDES": [
+        "muestra_compromiso_con_la_empresa,_aun_en_situaciones_dificiles.",
+        "mantiene_una_actitud_positiva_frente_a_los_rechazos_o_dificultades.",
+        "toma_la_iniciativa_sin_necesidad_de_ser_presionado.",
+        "colabora_con_sus_companeros_de_equipo_cuando_es_necesario.",
+        "acepta_el_feedback_y_busca_aplicarlo_para_mejorar.",
+        "trata_a_las_personas_clientas_con_respeto_y_profesionalismo_en_todo_momento.",
+        "se_mantiene_etico_en_sus_acciones_(no_manipula_pedidos,_respeta_normas).",
+        "persiste_en_la_venta_con_educacion_y_sin_presion_a_la_clientela.",
+        "mantiene_el_control_emocional_incluso_bajo_presion.",
+        "muestra_interes_por_aprender_y_desarrollarse_constantemente."
+    ],
+    "APTITUDES": [
+        "resuelve_problemas_cotidianos_de_manera_practica_y_rapida.",
+        "tiene_influencia_positiva_sobre_sus_companeros_sin_necesidad_de_autoridad_formal.",
+        "se_adapta_con_facilidad_a_cambios_en_la_ruta,_herramientas_o_productos.",
+        "recuerda_informacion_clave_sobre_personas_clientas,_precios_o_promociones_pasadas.",
+        "interpreta_y_comenta_sus_propios_resultados_de_venta_con_criterio.",
+        "hace_preguntas_sobre_nuevos_productos,_herramientas_o_estrategias.",
+        "mantiene_su_trabajo_ordenado_y_cumple_con_documentacion_sin_errores.",
+        "maneja_sus_emociones_con_madurez_en_contextos_dificiles_o_retadores.",
+        "busca_mejorar_por_cuenta_propia,_sin_que_se_le_exija.",
+        "tiene_el_potencial_para_crecer_a_roles_de_mayor_responsabilidad_en_el_futuro."
     ]
 }
 
@@ -127,38 +182,480 @@ descripcion_segmentos = {
 }
 
 # =============================================
+# FUNCIÓN PARA PROCESAR DATOS CON NUEVAS CATEGORÍAS
+# =============================================
+def procesar_datos_detallados(df_eval):
+    # Normalizar nombres de columnas para coincidir con nuestras categorías
+    df_eval.columns = df_eval.columns.str.lower().str.replace(' ', '_').str.replace('?', '')
+    
+    # Calcular promedios por categoría
+    for categoria, columnas in categorias_detalladas.items():
+        # Filtrar columnas que existen en el DataFrame
+        columnas_existentes = [col for col in columnas if col in df_eval.columns]
+        
+        if columnas_existentes:
+            # Calcular promedio solo si hay columnas existentes
+            df_eval[categoria] = df_eval[columnas_existentes].mean(axis=1)
+        else:
+            df_eval[categoria] = np.nan
+    
+    # Calcular puntaje total (promedio de todas las categorías principales)
+    categorias_principales = list(categorias_detalladas.keys())
+    df_eval['puntaje_total'] = df_eval[categorias_principales].mean(axis=1)
+    
+    # Calcular potencial (promedio de categorías específicas)
+    categorias_potencial = [
+        "POTENCIAL DE DESARROLLO", 
+        "HABILIDADES", 
+        "ACTITUDES", 
+        "APTITUDES"
+    ]
+    df_eval['potencial'] = df_eval[categorias_potencial].mean(axis=1)
+    
+    # Segmentación del equipo (como en tu código original)
+    condiciones = [
+        (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] >= 4.5),
+        (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] < 4.5),
+        (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] >= 4.5),
+        (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] < 4.5)
+    ]
+    opciones = [
+        "🟢 Alto Desempeño & Alto Potencial",
+        "🟡 Buen Desempeño pero Bajo Potencial",
+        "🟠 Alto Potencial pero Bajo Desempeño",
+        "🔴 Bajo Desempeño & Bajo Potencial"
+    ]
+    df_eval['segmento'] = np.select(condiciones, opciones, default="🧩 Inconsistente / Perfil Mixto")
+    
+    return df_eval
+
+# =============================================
+# NUEVA VISTA DE RESUMEN DE DESEMPEÑO
+# =============================================
+def mostrar_resumen_desempeno(vendedor_sel, df_eval):
+    # Obtener datos del vendedor
+    datos_vendedor = df_eval[df_eval['ruta'] == vendedor_sel].iloc[0].to_dict()
+    
+    # Mapeo de colores según puntaje
+    def obtener_color(puntaje):
+        if puntaje >= 4.5:
+            return "#2ecc71"  # Verde
+        elif puntaje >= 3.5:
+            return "#f39c12"  # Naranja
+        else:
+            return "#e74c3c"  # Rojo
+    
+    # --- Contenedor principal con estilo profesional ---
+    with st.container():
+        # Encabezado con estilo
+        st.markdown(f"""
+        <div style='background-color:#3498db; padding:15px; border-radius:10px; margin-bottom:20px;'>
+            <h2 style='color:white; margin:0;'>📊 Resumen de Desempeño Detallado</h2>
+            <h3 style='color:white; margin:0;'>{vendedor_sel}</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # --- Sección de métricas clave ---
+        with st.container():
+            st.markdown("### 📈 Métricas Clave")
+            
+            # Crear 3 columnas para métricas principales
+            col1, col2, col3 = st.columns(3)
+            
+            # Puntaje General
+            with col1:
+                puntaje_total = datos_vendedor.get('puntaje_total', 'N/D')
+                st.markdown(f"""
+                <div style='border:1px solid #ddd; padding:15px; border-radius:10px; text-align:center; background-color:#f8f9fa;'>
+                    <h4 style='margin-top:0;'>Puntaje General</h4>
+                    <h2 style='color:{obtener_color(puntaje_total) if isinstance(puntaje_total, (int, float)) else "#333"};'>
+                        {puntaje_total if isinstance(puntaje_total, str) else f"{puntaje_total:.1f}"}/5
+                    </h2>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Potencial
+            with col2:
+                potencial = datos_vendedor.get('potencial', 'N/D')
+                st.markdown(f"""
+                <div style='border:1px solid #ddd; padding:15px; border-radius:10px; text-align:center; background-color:#f8f9fa;'>
+                    <h4 style='margin-top:0;'>Potencial</h4>
+                    <h2 style='color:{obtener_color(potencial) if isinstance(potencial, (int, float)) else "#333"};'>
+                        {potencial if isinstance(potencial, str) else f"{potencial:.1f}"}/5
+                    </h2>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Segmento
+            with col3:
+                segmento = datos_vendedor.get('segmento', 'N/D')
+                desc_segmento = descripcion_segmentos.get(segmento, "Sin descripción disponible")
+                st.markdown(f"""
+                <div style='border:1px solid #ddd; padding:15px; border-radius:10px; background-color:#f8f9fa;'>
+                    <h4 style='margin-top:0; text-align:center;'>Segmento</h4>
+                    <div style='text-align:center; font-size:1.2em; margin-bottom:5px;'>{segmento}</div>
+                    <div style='font-size:0.9em; color:#666; text-align:center;'>{desc_segmento[:80]}...</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                # Mapeo de columnas cualitativas a títulos
+        columnas_cualitativas = {
+            "fortalezas_mas_destacadas": ("🌟 Fortalezas Destacadas", "#2ecc71"),  # Verde
+            "oportunidades_de_mejora": ("📉 Oportunidades de Mejora", "#e74c3c"),  # Rojo
+            "recomendaciones_especificas_de_formacion": ("🎓 Recomendaciones", "#3498db")  # Azul
+        }
+
+        # Crear columnas
+        cols = st.columns(len(columnas_cualitativas))
+
+        for (col_name, (title, color)), col in zip(columnas_cualitativas.items(), cols):
+            with col:
+                # Crear un contenedor con borde
+                with st.container(border=True):
+                    # Header con color
+                    st.markdown(f"<h4 style='color:{color}'>{title}</h4>", unsafe_allow_html=True)
+                    
+                    # Contenido
+                    if col_name in eval_sel:
+                        contenido = eval_sel[col_name]
+                        if pd.isna(contenido) or str(contenido).strip() == "":
+                            st.warning("Información no disponible")
+                        else:
+                            st.markdown(f"<div style='padding:10px;'>{contenido.strip()}</div>", 
+                                    unsafe_allow_html=True)
+                    else:
+                        st.error("Dato no encontrado en evaluación")
+        
+        # Separador visual
+        st.markdown("---")
+        
+        # --- Sección de evaluación por categorías ---
+        st.markdown("### 📋 Evaluación por Competencias")
+        
+        # Dividir categorías en 2 columnas para mejor distribución
+        col_cat1, col_cat2 = st.columns(2)
+        
+        for i, (categoria, columnas) in enumerate(categorias_detalladas.items()):
+            # Alternar entre columnas
+            target_col = col_cat1 if i % 2 == 0 else col_cat2
+            
+            with target_col:
+                # Obtener puntaje de la categoría
+                puntaje_categoria = datos_vendedor.get(categoria, 0)
+                color_categoria = obtener_color(puntaje_categoria)
+                
+                # Tarjeta de categoría
+                with st.container():
+                    st.markdown(f"""
+                    <div style='border:1px solid #ddd; padding:12px; border-radius:8px; margin-bottom:15px; 
+                                border-left:5px solid {color_categoria}; background-color:#f8f9fa;'>
+                        <div style='display:flex; justify-content:space-between; align-items:center;'>
+                            <h4 style='margin:0;'>{categoria}</h4>
+                            <span style='font-weight:bold; color:{color_categoria};'>{puntaje_categoria:.1f}/5</span>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Subcategorías (mostrar como lista)
+                    st.markdown("<div style='margin-left:20px; margin-top:5px;'>", unsafe_allow_html=True)
+                    for col in columnas:
+                        if col in datos_vendedor:
+                            valor = datos_vendedor[col]
+                            if isinstance(valor, (int, float)):
+                                color = obtener_color(valor)
+                                valor_str = f"{valor:.1f}/5"
+                            else:
+                                color = "#95a5a6"  # Gris
+                                valor_str = str(valor)
+                            
+                            st.markdown(
+                                f"<div style='padding: 5px; margin-bottom: 5px;'>"
+                                f"<span style='color:{color}; font-weight:bold;'>•</span> "
+                                f"{col.replace('_', ' ').title()}: <span style='font-weight:bold;'>{valor_str}</span>"
+                                "</div>",
+                                unsafe_allow_html=True
+                            )
+                    st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Separador visual
+        st.markdown("---")
+        
+        # --- Gráfico de radar ---
+        st.markdown("### 📊 Visualización por Áreas")
+        
+        # Preparar datos para el radar
+        categorias_radar = list(categorias_detalladas.keys())
+        valores_radar = [datos_vendedor.get(c, 0) for c in categorias_radar]
+        
+        fig = go.Figure()
+        fig.add_trace(go.Scatterpolar(
+            r=valores_radar,
+            theta=categorias_radar,
+            fill='toself',
+            name=vendedor_sel,
+            line_color='#3498db',
+            fillcolor='rgba(52, 152, 219, 0.2)'
+        ))
+        
+        fig.update_layout(
+            polar=dict(
+                radialaxis=dict(
+                    visible=True,
+                    range=[0, 5]
+                )),
+            showlegend=False,
+            margin=dict(l=50, r=50, t=30, b=50),
+            height=500,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)'
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # --- Sección de recomendaciones ---
+        st.markdown("---")
+        st.markdown("### 🎯 Recomendaciones Clave")
+        
+        # Generar recomendaciones basadas en el segmento
+        segmento = datos_vendedor.get('segmento', 'N/D')
+        
+        if segmento == "🟢 Alto Desempeño & Alto Potencial":
+            st.success("""
+            **Estrategia recomendada:** Desarrollo de liderazgo
+            - Asignar proyectos estratégicos o mentorías
+            - Considerar para programas de alto potencial
+            - Proporcionar desafíos adicionales para mantener el compromiso
+            """)
+        elif segmento == "🟡 Buen Desempeño pero Bajo Potencial":
+            st.info("""
+            **Estrategia recomendada:** Mantenimiento y especialización
+            - Reconocer y recompensar consistencia
+            - Desarrollar en áreas técnicas específicas
+            - Considerar roles especializados
+            """)
+        elif segmento == "🟠 Alto Potencial pero Bajo Desempeño":
+            st.warning("""
+            **Estrategia recomendada:** Desarrollo acelerado
+            - Implementar plan de mejora con mentoría
+            - Capacitación focalizada en brechas de desempeño
+            - Establecer metas claras con seguimiento frecuente
+            """)
+        elif segmento == "🔴 Bajo Desempeño & Bajo Potencial":
+            st.error("""
+            **Estrategia recomendada:** Acción correctiva
+            - Plan de mejora con objetivos y plazos definidos
+            - Revisión de adecuación al puesto
+            - Considerar rotación o reemplazo si no hay mejora
+            """)
+        else:
+            st.warning("""
+            **Estrategia recomendada:** Evaluación detallada
+            - Análisis individualizado de fortalezas y debilidades
+            - Plan de desarrollo personalizado
+            - Seguimiento cercano para identificar patrones
+            """)
+
+# =============================================
+# MOSTRAR LEYENDAS DE MATRICES
+# =============================================
+def mostrar_matrices_talento():
+    st.markdown("""
+    <style>
+    .segment-card {
+        border-left: 5px solid;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .matrix-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 15px 0;
+    }
+    .matrix-cell {
+        padding: 12px;
+        border-radius: 5px;
+        font-size: 14px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .matrix-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+    }
+    .matrix-table th, .matrix-table td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+    .matrix-table th {
+        background-color: #3498db;
+        color: white;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # --- Matriz 4-Box ---
+    st.markdown("### 📌 Matriz de Talento (4-Box) - Explicación de Segmentos")
+    
+    # Estrellas
+    st.markdown("""
+    <div class='segment-card' style='border-color: #2ecc71;'>
+        <h4 style='margin:0; color: #2ecc71;'>🟢 Estrellas - Alto Desempeño & Alto Potencial</h4>
+        <p style='margin:5px 0;'><b>Descripción:</b> Colaboradores con excelentes resultados actuales y gran potencial de crecimiento.</p>
+        <p style='margin:5px 0;'><b>Acciones:</b> Desarrollo de liderazgo, proyectos estratégicos, planes de sucesión.</p>
+        <p style='margin:5px 0;'><b>Riesgo:</b> Pérdida por falta de desafíos o reconocimiento.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Mantenedores
+    st.markdown("""
+    <div class='segment-card' style='border-color: #f39c12;'>
+        <h4 style='margin:0; color: #f39c12;'>🟡 Mantenedores - Buen Desempeño / Bajo Potencial</h4>
+        <p style='margin:5px 0;'><b>Descripción:</b> Consistentes en su rol actual pero con limitado crecimiento.</p>
+        <p style='margin:5px 0;'><b>Acciones:</b> Reconocimiento, especialización, roles estables.</p>
+        <p style='margin:5px 0;'><b>Riesgo:</b> Estancamiento si no se les valora adecuadamente.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Potenciales
+    st.markdown("""
+    <div class='segment-card' style='border-color: #e67e22;'>
+        <h4 style='margin:0; color: #e67e22;'>🟠 Potenciales - Alto Potencial / Bajo Desempeño</h4>
+        <p style='margin:5px 0;'><b>Descripción:</b> Tienen capacidades pero no están rindiendo al máximo.</p>
+        <p style='margin:5px 0;'><b>Acciones:</b> Mentoría, capacitación focalizada, claridad de expectativas.</p>
+        <p style='margin:5px 0;'><b>Riesgo:</b> Frustración si no se les da oportunidades.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Riesgos
+    st.markdown("""
+    <div class='segment-card' style='border-color: #e74c3c;'>
+        <h4 style='margin:0; color: #e74c3c;'>🔴 Riesgos - Bajo Desempeño & Bajo Potencial</h4>
+        <p style='margin:5px 0;'><b>Descripción:</b> Bajo rendimiento y poca proyección de mejora.</p>
+        <p style='margin:5px 0;'><b>Acciones:</b> Planes de mejora, reubicación o salida.</p>
+        <p style='margin:5px 0;'><b>Riesgo:</b> Impacto negativo en el equipo si no se actúa.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # --- Matriz 9-Box ---
+    st.markdown("### 🧩 Matriz 9-Box - Explicación Detallada")
+    
+    # Tabla resumen
+    st.markdown("""
+    <table class='matrix-table'>
+        <tr>
+            <th>Desempeño\Potencial</th>
+            <th>Bajo</th>
+            <th>Medio</th>
+            <th>Alto</th>
+        </tr>
+        <tr>
+            <td style='font-weight: bold; background-color: #f2f2f2;'>Alto</td>
+            <td style='background-color: #fef9e7;'>6. Expertos Técnicos</td>
+            <td style='background-color: #e8f8f5;'>8. Futuros Líderes</td>
+            <td style='background-color: #d5f5e3;'>9. Estrellas</td>
+        </tr>
+        <tr>
+            <td style='font-weight: bold; background-color: #f2f2f2;'>Medio</td>
+            <td style='background-color: #fdebd0;'>5. Colaboradores Clave</td>
+            <td style='background-color: #d4e6f1;'>7. Profesionales en Desarrollo</td>
+            <td style='background-color: #aed6f1;'>2. Talentos Emergentes</td>
+        </tr>
+        <tr>
+            <td style='font-weight: bold; background-color: #f2f2f2;'>Bajo</td>
+            <td style='background-color: #fadbd8;'>1. Bajo Rendimiento</td>
+            <td style='background-color: #e8daef;'>4. En Desarrollo</td>
+            <td style='background-color: #d2b4de;'>3. Diamantes en Bruto</td>
+        </tr>
+    </table>
+    """, unsafe_allow_html=True)
+    
+    # Explicación detallada
+    st.markdown("""
+    <div class='matrix-grid'>
+        <div class='matrix-cell' style='background-color: #fadbd8;'>
+            <b>1. Bajo Rendimiento</b>
+            <p style='margin:5px 0; font-size:13px;'>Necesitan mejora inmediata o salida</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #aed6f1;'>
+            <b>2. Talentos Emergentes</b>
+            <p style='margin:5px 0; font-size:13px;'>Buen potencial pero desempeño irregular</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #d2b4de;'>
+            <b>3. Diamantes en Bruto</b>
+            <p style='margin:5px 0; font-size:13px;'>Alto potencial oculto por bajo desempeño</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #e8daef;'>
+            <b>4. En Desarrollo</b>
+            <p style='margin:5px 0; font-size:13px;'>Requieren más tiempo y apoyo</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #fdebd0;'>
+            <b>5. Colaboradores Clave</b>
+            <p style='margin:5px 0; font-size:13px;'>Valiosos para operación actual</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #fef9e7;'>
+            <b>6. Expertos Técnicos</b>
+            <p style='margin:5px 0; font-size:13px;'>Especialistas sin interés en crecimiento</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #d4e6f1;'>
+            <b>7. Profesionales en Desarrollo</b>
+            <p style='margin:5px 0; font-size:13px;'>En camino a mayores responsabilidades</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #e8f8f5;'>
+            <b>8. Futuros Líderes</b>
+            <p style='margin:5px 0; font-size:13px;'>Próximos a convertirse en estrellas</p>
+        </div>
+        <div class='matrix-cell' style='background-color: #d5f5e3;'>
+            <b>9. Estrellas</b>
+            <p style='margin:5px 0; font-size:13px;'>Máximo desempeño y potencial</p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# =============================================
 # PROCESAMIENTO DE DATOS
 # =============================================
 def procesar_datos(df_eval):
     try:
-        # Evitar columnas cualitativas al convertir
-        columnas_cualitativas = [
-            "fortalezas_mas_destacadas",
-            "oportunidades_de_mejora",
-            "recomendaciones_especificas_de_formacion"
+        # Normalizar nombres de columnas
+        df_eval.columns = df_eval.columns.str.lower().str.replace(' ', '_').str.replace('?', '')
+        
+        # Calcular promedios por categoría detallada
+        for categoria, columnas in categorias_detalladas.items():
+            columnas_existentes = [col for col in columnas if col in df_eval.columns]
+            df_eval[categoria] = df_eval[columnas_existentes].mean(axis=1) if columnas_existentes else np.nan
+        
+        # Calcular puntaje total (promedio de todas las categorías principales)
+        categorias_principales = [
+            "EFICACIA EN RUTA",
+            "VENTA Y NEGOCIACIÓN", 
+            "RELACIÓN CON CLIENTES",
+            "ORDEN Y EJECUCIÓN EN EL PUNTO DE VENTA",
+            "COMPORTAMIENTO Y ACTITUD",
+            "CAPACIDAD DE AUTOGESTIÓN",
+            "SEGURIDAD Y CONDUCCIÓN"
         ]
-
-        for col in df_eval.columns:
-            if col not in [vendedor_col, supervisor_col] + columnas_cualitativas:
-                df_eval[col] = pd.to_numeric(df_eval[col], errors='coerce')
-
-        # Calcular puntajes por categoría
-        for categoria, columnas in categorias.items():
-            cols_categoria = [col for col in df_eval.columns if any(term in col for term in columnas)]
-            cols_categoria = [col for col in cols_categoria if pd.api.types.is_numeric_dtype(df_eval[col])]
-            
-            df_eval[categoria] = df_eval[cols_categoria].mean(axis=1) if cols_categoria else np.nan
-
-        # Calcular puntaje total y potencial
-        df_eval['puntaje_total'] = df_eval[list(categorias.keys())].mean(axis=1)
-        df_eval['potencial'] = df_eval[['Autonomía', 'Habilidades Blandas', 'Herramientas']].mean(axis=1)
-
+        df_eval['puntaje_total'] = df_eval[categorias_principales].mean(axis=1)
+        
+        # Calcular potencial (basado en categorías de desarrollo)
+        categorias_potencial = [
+            "POTENCIAL DE DESARROLLO",
+            "HABILIDADES",
+            "ACTITUDES",
+            "APTITUDES"
+        ]
+        df_eval['potencial'] = df_eval[categorias_potencial].mean(axis=1)
+        
         # Segmentación del equipo
         condiciones = [
-            (df_eval['puntaje_total'] >= 8) & (df_eval['potencial'] >= 8),
-            (df_eval['puntaje_total'] >= 8) & (df_eval['potencial'] < 6),
-            (df_eval['puntaje_total'] < 6) & (df_eval['potencial'] >= 8),
-            (df_eval['puntaje_total'] < 6) & (df_eval['potencial'] < 6)
+            (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] >= 4.5),
+            (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] < 4.5),
+            (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] >= 4.5),
+            (df_eval['puntaje_total'] < 4.5) & (df_eval['potencial'] < 4.5)
         ]
         opciones = [
             "🟢 Alto Desempeño & Alto Potencial",
@@ -167,14 +664,83 @@ def procesar_datos(df_eval):
             "🔴 Bajo Desempeño & Bajo Potencial"
         ]
         df_eval['segmento'] = np.select(condiciones, opciones, default="🧩 Inconsistente / Perfil Mixto")
-
+        
         return df_eval
 
     except Exception as e:
         st.error(f"Error al procesar datos: {str(e)}")
         return pd.DataFrame()
+    
+def generar_alertas(df_eval, df_cump):
+    alertas = []
+    
+    # 1. Alertas por bajo desempeño prolongado
+    if not df_cump.empty:
+        df_bajo_cump = df_cump.copy()
+        
+        # Convertir cumplimiento a numérico de manera robusta
+        if not pd.api.types.is_numeric_dtype(df_bajo_cump['cumplimiento']):
+            # Si no es numérico, intentar convertir de string con %
+            df_bajo_cump['cumplimiento_num'] = (
+                df_bajo_cump['cumplimiento']
+                .astype(str)  # Convertir a string primero
+                .str.replace('%', '')
+                .str.replace(',', '.')
+                .replace('nan', np.nan)
+                .replace('', np.nan)
+                .astype(float) / 100
+            )
+        else:
+            # Si ya es numérico, asegurar que esté en escala 0-1
+            df_bajo_cump['cumplimiento_num'] = df_bajo_cump['cumplimiento'] / 100
+        
+        # Identificar vendedores con 3+ meses bajo el 70%
+        df_bajo_cump['bajo_rendimiento'] = df_bajo_cump['cumplimiento_num'] < 0.7
+        bajo_3_meses = df_bajo_cump.groupby('vendedor')['bajo_rendimiento'].sum() >= 3
+        
+        for vendedor in bajo_3_meses[bajo_3_meses].index:
+            alertas.append({
+                "tipo": "🔴 Bajo rendimiento prolongado",
+                "mensaje": f"{vendedor} lleva 3+ meses con cumplimiento bajo 70%",
+                "prioridad": "Alta",
+                "accion": "Revisar plan de mejora y considerar acciones"
+            })
+    
+    # 2. Alertas por alto potencial sin plan
+    if 'potencial' in df_eval.columns:
+        df_alto_potencial = df_eval[df_eval['potencial'] >= 4.5]
+        for _, row in df_alto_potencial.iterrows():
+            if pd.isna(row.get('plan_desarrollo', None)) or str(row.get('plan_desarrollo', '')).strip() == '':
+                alertas.append({
+                    "tipo": "🟡 Alto potencial sin plan",
+                    "mensaje": f"{row['ruta']} tiene alto potencial pero no tiene plan de desarrollo asignado",
+                    "prioridad": "Media",
+                    "accion": "Asignar mentor y plan de desarrollo"
+                })
+    
+    # 3. Alertas por equipos en riesgo
+    if 'supervisor' in df_eval.columns and 'segmento' in df_eval.columns:
+        df_equipos = df_eval.groupby('supervisor').agg({
+            'ruta': 'count',
+            'segmento': lambda x: (x == "🔴 Bajo Desempeño & Bajo Potencial").sum()
+        })
+        df_equipos['porcentaje_riesgo'] = df_equipos['segmento'] / df_equipos['ruta']
+        
+        for supervisor in df_equipos[df_equipos['porcentaje_riesgo'] > 0.3].index:
+            alertas.append({
+                "tipo": "🔴 Equipo en riesgo",
+                "mensaje": f"El equipo de {supervisor} tiene {df_equipos.loc[supervisor, 'segmento']} vendedores en alto riesgo (>30%)",
+                "prioridad": "Alta",
+                "accion": "Revisar estrategia de supervisión y apoyo al líder"
+            })
+    
+    return pd.DataFrame(alertas) if alertas else pd.DataFrame()
 
 df_eval = procesar_datos(df_eval_orig.copy())
+
+if 'puntaje_total' not in df_eval.columns:
+    st.error(f"Columnas faltantes. Disponibles: {df_eval.columns.tolist()}")
+    st.stop()
 
 # Procesar datos de cumplimiento
 if not df_cump_orig.empty:
@@ -207,6 +773,60 @@ if not df_info_orig.empty:
         df_info = pd.DataFrame()
 else:
     df_info = pd.DataFrame()
+
+# =============================================
+# FUNCIÓN PARA GENERAR RECOMENDACIONES
+# =============================================
+
+def generar_recomendaciones(vendedor, df_eval, categorias):
+    """Genera recomendaciones de formación personalizadas"""
+    datos = df_eval[df_eval['ruta'] == vendedor].iloc[0]
+    recomendaciones = []
+    
+    # Umbrales para determinar necesidades
+    UMBRAL_CRITICO = 2
+    UMBRAL_MEJORA = 4
+    
+    for categoria, columnas in categorias.items():
+        puntaje = datos[categoria]
+        
+        if puntaje < UMBRAL_CRITICO:
+            severidad = "🔴 Crítico"
+            cursos = {
+                "Desempeño Comercial": ["Curso intensivo de técnicas de venta", "Taller de manejo de objeciones"],
+                "Ejecución en Ruta": ["Capacitación en planificación de rutas", "Workshop de gestión del tiempo"],
+                "Habilidades Blandas": ["Taller de comunicación efectiva", "Curso de inteligencia emocional"],
+                "Autonomía": ["Programa de toma de decisiones", "Workshop de resolución de problemas"],
+                "Herramientas": ["Entrenamiento en herramientas digitales", "Sesiones prácticas de reportes"]
+            }.get(categoria, ["Curso genérico de desarrollo profesional"])
+            
+            recomendaciones.append({
+                "Área": categoria,
+                "Puntaje": puntaje,
+                "Severidad": severidad,
+                "Cursos Recomendados": cursos,
+                "Prioridad": "Alta"
+            })
+            
+        elif puntaje < UMBRAL_MEJORA:
+            severidad = "🟡 Necesita mejora"
+            cursos = {
+                "Desempeño Comercial": ["Taller avanzado de ventas", "Sesión de mejores prácticas comerciales"],
+                "Ejecución en Ruta": ["Optimización de rutas", "Webinar de productividad"],
+                "Habilidades Blandas": ["Comunicación asertiva", "Taller de escucha activa"],
+                "Autonomía": ["Autogestión efectiva", "Webinar de proactividad"],
+                "Herramientas": ["Funciones avanzadas de herramientas", "Automatización de reportes"]
+            }.get(categoria, ["Curso de desarrollo profesional intermedio"])
+            
+            recomendaciones.append({
+                "Área": categoria,
+                "Puntaje": puntaje,
+                "Severidad": severidad,
+                "Cursos Recomendados": cursos,
+                "Prioridad": "Media"
+            })
+    
+    return pd.DataFrame(recomendaciones)
 
 # =============================================
 # FUNCIÓN PARA GENERAR PDF (MEJORADA)
@@ -287,7 +907,7 @@ def generar_pdf_perfil(vendedor, df_eval, df_seg, df_cump=None, df_info=None, ti
             pdf.cell(0, 10, "EVALUACIÓN POR COMPETENCIAS", ln=1, fill=True)
             pdf.ln(3)
 
-            for categoria, columnas in categorias.items():
+            for categoria, columnas in categorias_detalladas.items():
                 pdf.set_font('', 'B', 12)
                 pdf.cell(0, 8, txt=categoria, ln=1)
                 pdf.set_font('', '', 10)
@@ -295,7 +915,7 @@ def generar_pdf_perfil(vendedor, df_eval, df_seg, df_cump=None, df_info=None, ti
                     if col in datos_vendedor:
                         valor = datos_vendedor[col]
                         if isinstance(valor, (int, float)) and pd.notna(valor):
-                            valor_str = f"{valor:.2f}/10"
+                            valor_str = f"{valor:.2f}/5"
                         else:
                             valor_str = str(valor)
                         pdf.cell(0, 6, txt=f"- {col.replace('_', ' ').capitalize()}: {valor_str}", ln=1)
@@ -436,18 +1056,188 @@ if vista == "Resumen Ejecutivo":
     # Calcular métricas generales
     total_colaboradores = df_eval_orig[vendedor_col].nunique()
     total_supervisores = df_eval_orig[supervisor_col].nunique()
-    media_total = df_eval['puntaje_total'].mean()
-    media_potencial = df_eval['potencial'].mean()
+    try:
+        media_total = df_eval['puntaje_total'].mean()
+        media_potencial = df_eval['potencial'].mean()
+    except KeyError as e:
+        st.error(f"Error al calcular métricas: {str(e)}. Columnas disponibles: {df_eval.columns.tolist()}")
+        media_total, media_potencial = 0, 0  # Valores por defecto
 
     # Métricas en columnas
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Colaboradores", total_colaboradores)
     col2.metric("Total Supervisores", total_supervisores)
-    col3.metric("Puntaje Promedio", f"{media_total:.1f}/10")
-    col4.metric("Potencial Promedio", f"{media_potencial:.1f}/10")
+    col3.metric("Puntaje Promedio", f"{media_total:.1f}/5")
+    col4.metric("Potencial Promedio", f"{media_potencial:.1f}/5")
 
     st.markdown("---")
+
+        # Evaluación por áreas
+    st.subheader("📌 Evaluación General por Áreas Clave")
+    st.caption("Promedio del equipo en cada categoría de evaluación")
+
+    avg_areas = {area: df_eval[area].mean() for area in categorias_detalladas.keys()}
+
+    # Dividir las categorías en 2 grupos para mostrarlas en 2 filas
+    categorias_lista = list(categorias_detalladas.keys())
+    mitad = len(categorias_lista) // 2 + 1  # Ajuste para dividir mejor las categorías
+
+    # Primera fila de métricas
+    cols_fila1 = st.columns(mitad)
+    for i, area in enumerate(categorias_lista[:mitad]):
+        with cols_fila1[i]:
+            promedio = avg_areas[area]
+            if promedio >= 4.5:
+                color = "green"
+                emoji = "✅"
+            elif promedio >= 3.5:
+                color = "orange"
+                emoji = "⚠️"
+            else:
+                color = "red"
+                emoji = "❌"
+            
+            # Nombre abreviado para categorías largas
+            nombre_abreviado = {
+                "EFICACIA EN RUTA": "EFICACIA RUTA",
+                "VENTA Y NEGOCIACIÓN": "VENTA/NEGOCIACIÓN",
+                "RELACIÓN CON CLIENTES": "RELACIÓN CLIENTES",
+                "ORDEN Y EJECUCIÓN EN EL PUNTO DE VENTA": "EJECUCIÓN PUNTO VENTA",
+                "COMPORTAMIENTO Y ACTITUD": "COMPORTAMIENTO",
+                "CAPACIDAD DE AUTOGESTIÓN": "AUTOGESTIÓN",
+                "SEGURIDAD Y CONDUCCIÓN": "SEGURIDAD"
+            }.get(area, area)
+            
+            st.markdown(f"<h3 style='color:{color}; font-size: 16px;'>{emoji} {nombre_abreviado}</h3>", unsafe_allow_html=True)
+            st.metric("", f"{promedio:.1f}/5")
+
+    # Segunda fila de métricas
+    cols_fila2 = st.columns(len(categorias_lista[mitad:]))
+    for i, area in enumerate(categorias_lista[mitad:]):
+        with cols_fila2[i]:
+            promedio = avg_areas[area]
+            if promedio >= 4.5:
+                color = "green"
+                emoji = "✅"
+            elif promedio >= 3.5:
+                color = "orange"
+                emoji = "⚠️"
+            else:
+                color = "red"
+                emoji = "❌"
+            
+            nombre_abreviado = {
+                "POTENCIAL DE DESARROLLO": "POTENCIAL",
+                "HABILIDADES": "HABILIDADES",
+                "ACTITUDES": "ACTITUDES",
+                "APTITUDES": "APTITUDES"
+            }.get(area, area)
+            
+            st.markdown(f"<h3 style='color:{color}; font-size: 16px;'>{emoji} {nombre_abreviado}</h3>", unsafe_allow_html=True)
+            st.metric("", f"{promedio:.1f}/5")
+
+        # Selector de supervisor basado en datos reales
+    supervisores = df_eval['supervisor'].unique()
+    supervisor_sel = st.selectbox("Seleccionar Supervisor", supervisores)
     
+    st.markdown("---")
+    
+    # Sección 1: Resumen General
+    st.subheader(f"📌 Resumen General - Equipo de {supervisor_sel}")
+    
+    # Filtrar datos por supervisor
+    df_equipo = df_eval[df_eval['supervisor'] == supervisor_sel]
+    
+    # Calcular métricas
+    total_vendedores = len(df_equipo)
+    desempeno_promedio = df_equipo['puntaje_total'].mean()
+    
+    # Obtener rotación (simulado - necesitarías datos históricos)
+    rotacion = "10%"  # Esto debería venir de tus datos históricos
+    
+    # Calcular cumplimiento promedio si hay datos
+    if not df_cump.empty:
+        cumplimiento_equipo = df_cump[df_cump['supervisor'] == supervisor_sel]
+        if not cumplimiento_equipo.empty:
+            cumplimiento_promedio = cumplimiento_equipo['cumplimiento_num'].mean() * 100
+        else:
+            cumplimiento_promedio = "N/D"
+    else:
+        cumplimiento_promedio = "N/D"
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Total Vendedores", total_vendedores)
+    
+    with col2:
+        st.metric("Desempeño Promedio", f"{desempeno_promedio:.1f}/5")
+    
+    with col3:
+        st.metric("Rotación 6M", rotacion)
+    
+    with col4:
+        st.metric("Cumplimiento", 
+                 f"{cumplimiento_promedio:.1f}%" if isinstance(cumplimiento_promedio, (int, float)) else cumplimiento_promedio)
+    
+    # Sección 2: Top y Bottom Performers
+    st.markdown("---")
+    st.subheader("🏆 Top 5 y Bottom 5 Performers")
+    
+    # Ordenar vendedores por puntaje
+    df_equipo_sorted = df_equipo.sort_values('puntaje_total', ascending=False)
+    
+    # Top 5
+    top_vendedores = df_equipo_sorted.head(5)[['ruta', 'puntaje_total', 'segmento']]
+    top_vendedores = top_vendedores.rename(columns={
+        'ruta': 'Ruta',
+        'puntaje_total': 'Puntaje',
+        'segmento': 'Segmento'
+    })
+    
+    # Bottom 5
+    bottom_vendedores = df_equipo_sorted.tail(5)[['ruta', 'puntaje_total', 'segmento']]
+    bottom_vendedores = bottom_vendedores.rename(columns={
+        'ruta': 'Ruta',
+        'puntaje_total': 'Puntaje',
+        'segmento': 'Segmento'
+    })
+    
+    col_top, col_bottom = st.columns(2)
+    
+    with col_top:
+        st.markdown("##### 🏅 Top 5 Performers")
+        st.dataframe(
+            top_vendedores,
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "Puntaje": st.column_config.ProgressColumn(
+                    "Puntaje",
+                    format="%.1f",
+                    min_value=0,
+                    max_value=5
+                )
+            }
+        )
+    
+    with col_bottom:
+        st.markdown("##### ⚠️ Bottom 5 Performers")
+        st.dataframe(
+            bottom_vendedores,
+            hide_index=True,
+            use_container_width=True,
+            column_config={
+                "Puntaje": st.column_config.ProgressColumn(
+                    "Puntaje",
+                    format="%.1f",
+                    min_value=0,
+                    max_value=5
+                )
+            }
+        )
+    st.markdown("---")
+
     # Nueva sección de Evolución de Indicadores
     if not df_cump.empty:
         st.subheader("📈 Evolución de Indicadores de Gestión")
@@ -531,69 +1321,12 @@ if vista == "Resumen Ejecutivo":
                            color_discrete_sequence=['#636EFA'])
     st.plotly_chart(fig_dist, use_container_width=True)
 
-    # Evaluación por áreas
-    st.subheader("📌 Evaluación General por Áreas Clave")
-    st.caption("Promedio del equipo en cada categoría de evaluación")
-    
-    avg_areas = {area: df_eval[area].mean() for area in categorias.keys()}
-    cols = st.columns(len(categorias))
-    
-    for i, (area, promedio) in enumerate(avg_areas.items()):
-        with cols[i]:
-            if promedio >= 8:
-                color = "green"
-                emoji = "✅"
-            elif promedio >= 6:
-                color = "orange"
-                emoji = "⚠️"
-            else:
-                color = "red"
-                emoji = "❌"
-            
-            st.markdown(f"<h3 style='color:{color}'>{emoji} {area}</h3>", unsafe_allow_html=True)
-            st.metric("Puntaje Promedio", f"{promedio:.1f}/10")
-
-    st.markdown("---")
-    
-    # Segmentación del equipo
-    st.subheader("🧩 Segmentación del Equipo")
-    st.caption("Clasificación de vendedores según desempeño y potencial")
-    
-    segment_counts = df_eval['segmento'].value_counts().reset_index()
-    segment_counts.columns = ['Segmento', 'Cantidad']
-    
-    col1, col2 = st.columns([2, 3])
-    
-    with col1:
-        st.dataframe(
-            segment_counts.merge(
-                pd.DataFrame.from_dict(descripcion_segmentos, orient='index', columns=['Descripción']),
-                left_on='Segmento', right_index=True
-            ).sort_values('Cantidad', ascending=False),
-            hide_index=True,
-            use_container_width=True
-        )
-    
-    with col2:
-        fig_segmentos = px.pie(segment_counts, 
-                              values='Cantidad', 
-                              names='Segmento',
-                              color='Segmento',
-                              color_discrete_map={
-                                  "🟢 Alto Desempeño & Alto Potencial": "#00CC96",
-                                  "🟡 Buen Desempeño pero Bajo Potencial": "#FFA15A",
-                                  "🟠 Alto Potencial pero Bajo Desempeño": "#FECB52",
-                                  "🔴 Bajo Desempeño & Bajo Potencial": "#EF553B",
-                                  "🧩 Inconsistente / Perfil Mixto": "#AB63FA"
-                              })
-        st.plotly_chart(fig_segmentos, use_container_width=True)
-
     # Mapa de calor de competencias
     st.subheader("🔥 Correlación entre Competencias")
     st.caption("Relación estadística entre las diferentes áreas evaluadas")
     
     # Preparar datos para el mapa de calor
-    corr_matrix = df_eval[list(categorias.keys())].corr().round(2)
+    corr_matrix = df_eval[list(categorias_detalladas.keys())].corr().round(2)
     
     fig_heatmap = px.imshow(
         corr_matrix,
@@ -610,10 +1343,80 @@ if vista == "Resumen Ejecutivo":
     )
     st.plotly_chart(fig_heatmap, use_container_width=True)
 
+    st.markdown("---")
+    st.subheader("🔔 Alertas Automatizadas")
+    
+    df_alertas = generar_alertas(df_eval, df_cump)
+
+    if not df_alertas.empty:
+        # Filtrar por prioridad
+        prioridad = st.selectbox("Filtrar por prioridad:", ["Todas", "Alta", "Media", "Baja"])
+        if prioridad != "Todas":
+            df_alertas = df_alertas[df_alertas['prioridad'] == prioridad]
+        
+        # Mostrar alertas
+        for _, alerta in df_alertas.iterrows():
+            if alerta['prioridad'] == "Alta":
+                st.error(f"**{alerta['tipo']}** - {alerta['mensaje']}")
+                st.caption(f"Acción recomendada: {alerta['accion']}")
+            elif alerta['prioridad'] == "Media":
+                st.warning(f"**{alerta['tipo']}** - {alerta['mensaje']}")
+                st.caption(f"Acción recomendada: {alerta['accion']}")
+            else:
+                st.info(f"**{alerta['tipo']}** - {alerta['mensaje']}")
+                st.caption(f"Acción recomendada: {alerta['accion']}")
+    else:
+        st.success("✅ No hay alertas críticas para mostrar")    
+
+            # Sección 5: Recomendaciones Iniciales
+    st.markdown("---")
+    st.subheader("🎯 Recomendaciones Iniciales")
+    
+    # Recomendaciones basadas en segmentación
+    num_alto_riesgo = len(df_equipo[df_equipo['segmento'] == "🔴 Bajo Desempeño & Bajo Potencial"])
+    num_alto_potencial = len(df_equipo[df_equipo['segmento'].isin(["🟢 Alto Desempeño & Alto Potencial", "🟠 Alto Potencial pero Bajo Desempeño"])])
+    
+    st.markdown(f"""
+    Basado en el análisis del equipo de **{supervisor_sel}** ({total_vendedores} vendedores):
+    
+    1. **Enfoque inmediato:**
+       - {num_alto_riesgo} vendedores en alto riesgo requieren planes de mejora
+       - {num_alto_potencial} vendedores con alto potencial para desarrollar
+    
+    2. **Acciones recomendadas:**
+       - Revisión 1:1 con bottom performers
+       - Asignar mentorías cruzadas (top → alto potencial)
+       - Taller de habilidades clave para el segmento predominante
+    
+    3. **Seguimiento sugerido:**
+       - Revisión semanal de métricas clave
+       - Evaluación mensual de progreso
+       - Ajuste de rutas y asignaciones
+    """)
+    
+    # Sección 6: Contactos Clave (simulado - adaptar a tus datos)
+    st.markdown("---")
+    st.subheader("📞 Contactos Clave")
+    
+    contactos = [
+        {"Rol": "Supervisor", "Nombre": supervisor_sel, "Teléfono": "809-555-0101", "Email": f"{supervisor_sel.lower().replace(' ', '.')}@empresa.com"},
+        {"Rol": "RRHH Comercial", "Nombre": "Contacto RRHH", "Teléfono": "809-555-0202", "Email": "rrhh.comercial@empresa.com"},
+        {"Rol": "Soporte Técnico", "Nombre": "Equipo Soporte", "Teléfono": "809-555-0303", "Email": "soporte.comercial@empresa.com"},
+    ]
+    
+    st.dataframe(
+        pd.DataFrame(contactos),
+        hide_index=True,
+        use_container_width=True,
+        column_config={
+            "Email": st.column_config.LinkColumn("Email")
+        }
+    )
+
 elif vista == "Individual":
     st.header("👤 Vista Individual")
     st.markdown("""
-    **Análisis detallado** por vendedor, incluyendo evaluación completa, seguimiento de visitas 
+    **Análisis detallado** por vendedor, incluyendo evaluación por Competencias, seguimiento de visitas 
     y recomendaciones personalizadas de desarrollo.
     """)
     
@@ -650,77 +1453,19 @@ elif vista == "Individual":
     seg_sel = df_seg_orig[df_seg_orig[vendedor_col] == vendedor_sel]
     
     # Determinar segmento
-    if eval_sel['puntaje_total'] >= 8 and eval_sel['potencial'] >= 8:
-        segmento = "🟢 Alto Desempeño & Alto Potencial"
-    elif eval_sel['puntaje_total'] >= 8 and eval_sel['potencial'] < 6:
-        segmento = "🟡 Buen Desempeño pero Bajo Potencial"
-    elif eval_sel['puntaje_total'] < 6 and eval_sel['potencial'] >= 8:
-        segmento = "🟠 Alto Potencial pero Bajo Desempeño"
-    elif eval_sel['puntaje_total'] < 6 and eval_sel['potencial'] < 6:
-        segmento = "🔴 Bajo Desempeño & Bajo Potencial"
-    else:
-        segmento = "🧩 Inconsistente / Perfil Mixto"
+    segmento = eval_sel['segmento']
     
     # Pestañas para vista individual
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Resumen", "📝 Evaluación Completa", "🔄 Seguimiento", "📈 Indicadores", "🎯 Plan de Desarrollo"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Resumen", "🔄 Seguimiento", "📈 Indicadores", "🎯 Plan de Desarrollo", "🎓 Recomendaciones"])
 
     with tab1:
-        st.subheader(f"📊 Resumen de Desempeño: {vendedor_sel}")
 
-        # --- Métricas principales ---
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Puntaje Total", f"{eval_sel['puntaje_total']:.1f}/10")
-        col2.metric("Potencial", f"{eval_sel['potencial']:.1f}/10")
-        col3.metric("Segmento", eval_sel['segmento'], help=descripcion_segmentos.get(eval_sel['segmento'], ""))
-
-        # Mapeo de columnas cualitativas a títulos
-        columnas_cualitativas = {
-            "fortalezas_mas_destacadas": "🌟 Fortalezas Destacadas",
-            "oportunidades_de_mejora": "📉 Oportunidades de Mejora",
-            "recomendaciones_especificas_de_formacion": "🎓 Recomendaciones de Formación"
-        }
-
-        # Mostrar como párrafos tipo diálogo
-        for col, titulo in columnas_cualitativas.items():
-            if col in eval_sel:
-                contenido = eval_sel[col]
-                if pd.isna(contenido) or str(contenido).strip() == "":
-                    st.info(f"**{titulo}:** No fue completado.")
-                else:
-                    st.markdown(f"**{titulo}:**")
-                    st.markdown(f"> {contenido.strip()}")
-                    st.markdown("")  # Espacio entre secciones
-            else:
-                st.warning(f"Columna '{col}' no encontrada.")
-            
-        # Gráfico de radar
-        st.subheader("Desempeño por Área")
-        categorias_radar = list(categorias.keys())
-        valores_radar = [eval_sel[c] for c in categorias_radar]
-        
-        fig = go.Figure()
-        fig.add_trace(go.Scatterpolar(
-            r=valores_radar,
-            theta=categorias_radar,
-            fill='toself',
-            name=vendedor_sel,
-            line_color='#636EFA'
-        ))
-        fig.update_layout(
-            polar=dict(
-                radialaxis=dict(
-                    visible=True,
-                    range=[0, 10]
-                )),
-            showlegend=False,
-            margin=dict(l=50, r=50, t=50, b=50),
-            height=500
-        )
-        st.plotly_chart(fig, use_container_width=True)
+    # Mostrar resumen de desempeño detallado
+        mostrar_resumen_desempeno(vendedor_sel, df_eval)
         
         # Nueva sección: Potencial para supervisor
         st.subheader("🔍 Potencial para Supervisor")
-        potencial_supervisor = "Sí" if (eval_sel['potencial'] >= 8 and eval_sel['Habilidades Blandas'] >= 8) else "Con desarrollo" if (eval_sel['potencial'] >= 7) else "No"
+        potencial_supervisor = "Sí" if (eval_sel['potencial'] >= 4.5 and eval_sel['HABILIDADES'] >= 4.5) else "Con desarrollo" if (eval_sel['potencial'] >= 3.5) else "No"
         
         col_pot1, col_pot2 = st.columns(2)
         with col_pot1:
@@ -741,30 +1486,31 @@ elif vista == "Individual":
         cols_hr = st.columns(4)
 
         with cols_hr[0]:
-            st.metric("📅 Antigüedad", "2.5 años", help="Tiempo en el puesto actual")
+            st.metric("📅 Antigüedad", tiempo_compania, "Meses", help="Tiempo en el puesto actual")
 
         with cols_hr[1]:
             if not df_cump.empty:
                 df_vend_cump = df_cump[df_cump['vendedor'] == vendedor_sel].copy()
                 if not df_vend_cump.empty:
-                    # Solución: Convertir a string primero y manejar NaN
+                    # Convertir cumplimiento a numérico
                     df_vend_cump['cumplimiento_num'] = (
-                        df_vend_cump['cumplimiento'].astype(str)
+                        df_vend_cump['cumplimiento']
+                        .astype(str)
                         .str.replace('%', '')
                         .replace('nan', np.nan)
                         .astype(float) / 100
-            )
-            
-            df_vend_cump = df_vend_cump.sort_values(['year', 'mes'])
-            tendencia = "↑ Mejorando" if df_vend_cump['cumplimiento_num'].iloc[-1] > df_vend_cump['cumplimiento_num'].iloc[0] else "↓ Empeorando"
-            st.metric("📈 Tendencia Cumplimiento", tendencia)
+                    )
+                    
+                    df_vend_cump = df_vend_cump.sort_values(['year', 'mes'])
+                    tendencia = "↑ Mejorando" if df_vend_cump['cumplimiento_num'].iloc[-1] > df_vend_cump['cumplimiento_num'].iloc[0] else "↓ Empeorando"
+                    st.metric("📈 Tendencia Cumplimiento", tendencia)
 
         with cols_hr[2]:
             puntaje_total = eval_sel.get('puntaje_total', 0)
-            if puntaje_total >= 8:
+            if puntaje_total >= 4.5:
                 consistencia = "Alta"
                 color = "green"
-            elif puntaje_total >= 6:
+            elif puntaje_total >= 3.5:
                 consistencia = "Media"
                 color = "orange"
             else:
@@ -775,10 +1521,10 @@ elif vista == "Individual":
 
         with cols_hr[3]:
             potencial = eval_sel.get('potencial', 0)
-            if potencial >= 8:
+            if potencial >= 4.5:
                 nivel_potencial = "Alto"
                 color = "green"
-            elif potencial >= 6:
+            elif potencial >= 3.5:
                 nivel_potencial = "Medio"
                 color = "orange"
             else:
@@ -799,15 +1545,15 @@ elif vista == "Individual":
                 "Alineamiento Cultural"
             ],
             "Evaluación": [
-                "Alto" if puntaje_total >= 8 else "Medio" if puntaje_total >= 6 else "Bajo",
+                "Alto" if puntaje_total >= 4.5 else "Medio" if puntaje_total >= 3.5 else "Bajo",
                 nivel_potencial,
                 tendencia if 'tendencia' in locals() else "N/D",
                 consistencia,
                 "Alto"
             ],
             "Recomendación": [
-                "Mantener/Desarrollar" if puntaje_total >= 8 else "Capacitar" if puntaje_total >= 6 else "Revisar",
-                "Invertir en desarrollo" if potencial >= 8 else "Monitorear" if potencial >= 6 else "Limitar inversión",
+                "Mantener/Desarrollar" if puntaje_total >= 4.5 else "Capacitar" if puntaje_total >= 3.5 else "Revisar",
+                "Invertir en desarrollo" if potencial >= 4.5 else "Monitorear" if potencial >= 3.5 else "Limitar inversión",
                 "Reforzar positivamente" if 'tendencia' in locals() and tendencia == "↑ Mejorando" else "Intervenir",
                 "Estable" if consistencia == "Alta" else "Volátil",
                 "Retener"
@@ -823,128 +1569,44 @@ elif vista == "Individual":
         st.markdown("---")
         
         # Botones para generar PDFs
-    st.markdown("---")
-    st.subheader("📄 Generar Reportes Formales")
-    
-    col_pdf1, col_pdf2, col_pdf3 = st.columns(3)
-    
-    with col_pdf1:
-        if st.button("📄 Generar Perfil PDF"):
-            pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "general")
-            if pdf_bytes:
-                st.download_button(
-                    label="⬇️ Descargar Perfil Completo",
-                    data=pdf_bytes,
-                    file_name=f"Perfil_{vendedor_sel}.pdf",
-                    mime="application/pdf"
-                )
-    
-    with col_pdf2:
-        if st.button("🏆 Generar Reconocimiento PDF"):
-            pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "reconocimiento")
-            if pdf_bytes:
-                st.download_button(
-                    label="⬇️ Descargar Reconocimiento",
-                    data=pdf_bytes,
-                    file_name=f"Reconocimiento_{vendedor_sel}.pdf",
-                    mime="application/pdf"
-                )
-    
-    with col_pdf3:
-        if st.button("⚠️ Generar Plan Mejora PDF"):
-            pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "mejora")
-            if pdf_bytes:
-                st.download_button(
-                    label="⬇️ Descargar Plan de Mejora",
-                    data=pdf_bytes,
-                    file_name=f"Plan_Mejora_{vendedor_sel}.pdf",
-                    mime="application/pdf"
-                )
-    
+        st.subheader("📄 Generar Reportes Formales")
+        
+        col_pdf1, col_pdf2, col_pdf3 = st.columns(3)
+        
+        with col_pdf1:
+            if st.button("📄 Generar Perfil PDF"):
+                pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "general")
+                if pdf_bytes:
+                    st.download_button(
+                        label="⬇️ Descargar Perfil Completo",
+                        data=pdf_bytes,
+                        file_name=f"Perfil_{vendedor_sel}.pdf",
+                        mime="application/pdf"
+                    )
+        
+        with col_pdf2:
+            if st.button("🏆 Generar Reconocimiento PDF"):
+                pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "reconocimiento")
+                if pdf_bytes:
+                    st.download_button(
+                        label="⬇️ Descargar Reconocimiento",
+                        data=pdf_bytes,
+                        file_name=f"Reconocimiento_{vendedor_sel}.pdf",
+                        mime="application/pdf"
+                    )
+        
+        with col_pdf3:
+            if st.button("⚠️ Generar Plan Mejora PDF"):
+                pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "mejora")
+                if pdf_bytes:
+                    st.download_button(
+                        label="⬇️ Descargar Plan de Mejora",
+                        data=pdf_bytes,
+                        file_name=f"Plan_Mejora_{vendedor_sel}.pdf",
+                        mime="application/pdf"
+                    )
+
     with tab2:
-        st.subheader("Evaluación Completa por Competencias")
-     
-        # Verificación de datos
-        if pd.isna(eval_sel['efectividad_real_vs_meta']):
-            st.warning("Datos de evaluación incompletos para este vendedor")
-        else:
-            # Sección: Venta y Negociación
-            st.markdown("### 💰 Venta y Negociación")
-            cols_venta = st.columns(3)
-            with cols_venta[0]:
-                valor = eval_sel.get('efectividad_real_vs_meta', np.nan)
-                st.metric("Efectividad", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Capacidad para lograr los objetivos de venta")
-            with cols_venta[1]:
-                valor = eval_sel.get('manejo_de_objeciones_efectivas', np.nan)
-                st.metric("Manejo de Objeciones", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Habilidad para manejar objeciones de clientes")
-            with cols_venta[2]:
-                valor = eval_sel.get('cierra_ventas_sin_depender_de_promociones', np.nan)
-                st.metric("Venta Cruzada", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Capacidad para vender productos complementarios")
-
-            # Sección: Relación con Clientes
-            st.markdown("### 🤝 Relación con Clientes")
-            cols_cliente = st.columns(3)
-            with cols_cliente[0]:
-                valor = eval_sel.get('gana_confianza_del_cliente', np.nan)
-                st.metric("Empatía", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Capacidad para entender las necesidades del cliente")
-            with cols_cliente[1]:
-                valor = eval_sel.get('soluciona_conflictos_con_criterio', np.nan)
-                st.metric("Confianza", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Generación de confianza con los clientes")
-            with cols_cliente[2]:
-                valor = eval_sel.get('soluciona_conflictos_con_criterio', np.nan)
-                st.metric("Resolución de Conflictos", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Habilidad para resolver problemas con clientes")
-
-            # Sección: Comportamiento y Actitud
-            st.markdown("### 🧠 Comportamiento y Actitud")
-            cols_actitud = st.columns(3)
-            with cols_actitud[0]:
-                valor = eval_sel.get('toma_la_iniciativa_sin_necesidad_de_ser_presionado.', np.nan)
-                st.metric("Iniciativa", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Proactividad y toma de iniciativa")
-            with cols_actitud[1]:
-                valor = eval_sel.get('resuelve_problemas_cotidianos_de_manera_práctica_y_rápida.', np.nan)
-                st.metric("Adaptación", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Flexibilidad ante cambios")
-            with cols_actitud[2]:
-                valor = eval_sel.get('persiste_en_la_venta_con_educación_y_sin_presión_al_cliente.', np.nan)
-                st.metric("Persistencia", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Constancia ante desafíos")
-
-            # Sección: Aptitudes
-            st.markdown("### 🛠️ Aptitudes Técnicas")
-            cols_apt = st.columns(3)
-            with cols_apt[0]:
-                valor = eval_sel.get('usa_adecuadamente_las_aplicaciones', np.nan)
-                st.metric("Manejo de Herramientas", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Uso de aplicaciones y sistemas")
-            with cols_apt[1]:
-                valor = eval_sel.get('reporta_faltantes_o_problemas_de_averias', np.nan)
-                st.metric("Reportes", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Elaboración de informes y reportes")
-            with cols_apt[2]:
-                valor = eval_sel.get('planifica_su_ruta_diaria_de_manera_lógica_y_eficiente.', np.nan)
-                st.metric("Planificación", 
-                         f"{valor:.1f}/10" if pd.notna(valor) else "N/D",
-                         help="Organización y planificación de rutas")
-    
-    with tab3:
         st.subheader("🔄 Seguimiento de Visitas")
         st.caption("Registro histórico de visitas y acompañamientos realizados")
 
@@ -1055,7 +1717,7 @@ elif vista == "Individual":
                 else:
                     st.metric("Registros este año", len(seg_sel))
     
-    with tab4:
+    with tab3:
         st.subheader("📈 Indicadores de Gestión Comercial")
         
         if not df_cump.empty:
@@ -1069,7 +1731,7 @@ elif vista == "Individual":
                     .str.replace('%', '')
                     .replace('nan', np.nan)  # Manejar valores NaN
                     .astype(float) / 100
-)
+                )
                 df_vendedor_cump['fecha'] = pd.to_datetime(df_vendedor_cump.apply(lambda x: f"{x['year']}-{x['mes']}-01", axis=1))
                 
                 # Gráfico de evolución temporal
@@ -1165,13 +1827,13 @@ elif vista == "Individual":
         else:
             st.warning("No se encontraron datos de cumplimiento para mostrar")
     
-    with tab5:
+    with tab4:
         st.subheader("🎯 Plan de Desarrollo Personalizado")
         
         # Sección de recomendaciones específicas
         st.markdown("### 📚 Recomendaciones Específicas de Formación")
         
-        if eval_sel['Habilidades Blandas'] < 7:
+        if eval_sel['HABILIDADES'] < 2.9:
             st.markdown("""
             #### 🧠 Habilidades Blandas
             - **Curso recomendado:** Comunicación Efectiva y Manejo de Objeciones
@@ -1180,7 +1842,7 @@ elif vista == "Individual":
             - **Objetivo:** Mejorar capacidad de escucha activa y manejo de objeciones
             """)
         
-        if eval_sel['Autonomía'] < 6:
+        if eval_sel['CAPACIDAD DE AUTOGESTIÓN'] < 2.9:
             st.markdown("""
             #### 🦅 Autonomía
             - **Curso recomendado:** Toma de Decisiones y Resolución de Problemas
@@ -1189,7 +1851,7 @@ elif vista == "Individual":
             - **Objetivo:** Desarrollar pensamiento crítico y autonomía
             """)
         
-        if eval_sel['Herramientas'] < 6:
+        if eval_sel['HABILIDADES'] < 2.9:
             st.markdown("""
             #### 💻 Herramientas Digitales
             - **Curso recomendado:** Dominio de Herramientas Comerciales
@@ -1273,12 +1935,71 @@ elif vista == "Individual":
                 "Gerencia"
             ]
         }
-        
+
         st.dataframe(
             pd.DataFrame(timeline_data),
             hide_index=True,
             use_container_width=True
         )
+
+    with tab5:
+        st.subheader("🎓 Recomendaciones de Formación")
+        
+        df_recomendaciones = generar_recomendaciones(vendedor_sel, df_eval, categorias_detalladas)
+        
+        if not df_recomendaciones.empty:
+            st.dataframe(
+                df_recomendaciones.sort_values('Prioridad', ascending=False),
+                column_config={
+                    "Cursos Recomendados": st.column_config.ListColumn(
+                        "Cursos Recomendados",
+                        help="Lista de cursos sugeridos para mejorar en esta área"
+                    )
+                },
+                hide_index=True,
+                use_container_width=True
+            )
+            
+            # Generar resumen ejecutivo
+            st.markdown("#### 📋 Resumen de Necesidades")
+            
+            criticos = df_recomendaciones[df_recomendaciones['Severidad'] == "🔴 Crítico"]
+            if not criticos.empty:
+                st.error(f"**Áreas críticas ({len(criticos)}):** {', '.join(criticos['Área'])}")
+            
+            mejoras = df_recomendaciones[df_recomendaciones['Severidad'] == "🟡 Necesita mejora"]
+            if not mejoras.empty:
+                st.warning(f"**Áreas a mejorar ({len(mejoras)}):** {', '.join(mejoras['Área'])}")
+                
+            # Botón para generar plan de formación
+            if st.button("📄 Generar Plan de Formación PDF"):
+                pdf = FPDF()
+                pdf.add_page()
+                pdf.set_font("Arial", size=12)
+                
+                pdf.cell(0, 10, f"Plan de Formación para {vendedor_sel}", ln=1, align='C')
+                pdf.ln(10)
+                
+                for _, row in df_recomendaciones.iterrows():
+                    pdf.set_font("Arial", 'B', 12)
+                    pdf.cell(0, 10, f"Área: {row['Área']} ({row['Puntaje']}/5) - {row['Severidad']}", ln=1)
+                    pdf.set_font("Arial", '', 10)
+                    
+                    for curso in row['Cursos Recomendados']:
+                        pdf.cell(10)  # Indentación
+                        pdf.cell(0, 8, f"- {curso}", ln=1)
+                    
+                    pdf.ln(5)
+                
+                pdf_bytes = pdf.output(dest='S').encode('latin-1')
+                st.download_button(
+                    label="⬇️ Descargar Plan de Formación",
+                    data=pdf_bytes,
+                    file_name=f"Plan_Formacion_{vendedor_sel}.pdf",
+                    mime="application/pdf"
+                )
+        else:
+            st.success("✅ Todas las áreas tienen un buen desempeño. No se requieren acciones de formación inmediatas.")
 
 else:  # Vista de Equipo
     st.header("👥 Vista General del Equipo")
@@ -1299,16 +2020,16 @@ else:  # Vista de Equipo
     if supervisor_sel:
         df_filtrado = df_filtrado[df_filtrado['supervisor'].isin(supervisor_sel)]
     if ruta_sel:
-        df_filtrado = df_filtrado[df_filtrado['vendedor'].isin(ruta_sel)]
+        df_filtrado = df_filtrado[df_filtrado['ruta'].isin(ruta_sel)]
     
     # Pestañas para vista de equipo
-    tab1, tab2, tab3 = st.tabs(["🏆 Ranking", "🧩 Matriz de Talento", "📊 Análisis por Área"])
+    tab1, tab2, tab3, tab4 = st.tabs(["🏆 Ranking", "🧩 Matriz de Talento", "📊 Análisis por Área", "🧩 Matriz 9-Box de Talento"])
     
     with tab1:
         st.subheader("Ranking de Vendedores")
         st.caption("Comparativa de desempeño según diferentes métricas")
         
-        metrica_ranking = st.selectbox("Ordenar por", ["Puntaje Total", "Potencial"] + list(categorias.keys()))
+        metrica_ranking = st.selectbox("Ordenar por", ["Puntaje Total", "Potencial"] + list(categorias_detalladas.keys()))
         
         if metrica_ranking == "Puntaje Total":
             df_ranking = df_filtrado.sort_values("puntaje_total", ascending=False)
@@ -1354,20 +2075,21 @@ else:  # Vista de Equipo
         
         fig.update_layout(
             shapes=[
-                dict(type='line', x0=7, x1=7, y0=0, y1=10, line=dict(color='gray', dash='dot')),
-                dict(type='line', x0=0, x1=10, y0=7, y1=7, line=dict(color='gray', dash='dot')),
-                dict(type='rect', x0=7, x1=10, y0=7, y1=10, line=dict(color='green'), opacity=0.1),
-                dict(type='rect', x0=0, x1=7, y0=7, y1=10, line=dict(color='orange'), opacity=0.1),
-                dict(type='rect', x0=7, x1=10, y0=0, y1=7, line=dict(color='yellow'), opacity=0.1),
-                dict(type='rect', x0=0, x1=7, y0=0, y1=7, line=dict(color='red'), opacity=0.1)
+                dict(type='line', x0=4.5, x1=4.5, y0=0, y1=5, line=dict(color='gray', dash='dot')),
+                dict(type='line', x0=0, x1=5, y0=4.5, y1=4.5, line=dict(color='gray', dash='dot')),
+                dict(type='rect', x0=4.5, x1=5, y0=4.5, y1=5, line=dict(color='green'), opacity=0.1),
+                dict(type='rect', x0=0, x1=4.5, y0=4.5, y1=5, line=dict(color='orange'), opacity=0.1),
+                dict(type='rect', x0=4.5, x1=5, y0=0, y1=4.5, line=dict(color='yellow'), opacity=0.1),
+                dict(type='rect', x0=0, x1=4.5, y0=0, y1=4.5, line=dict(color='red'), opacity=0.1)
             ],
             annotations=[
-                dict(x=8.5, y=8.5, text="Estrellas", showarrow=False, font=dict(color='green')),
-                dict(x=3.5, y=8.5, text="Potenciales", showarrow=False, font=dict(color='orange')),
-                dict(x=8.5, y=3.5, text="Mantenedores", showarrow=False, font=dict(color='gold')),
-                dict(x=3.5, y=3.5, text="Riesgos", showarrow=False, font=dict(color='red'))
+                dict(x=4.75, y=4.75, text="Estrellas", showarrow=False, font=dict(color='green')),
+                dict(x=2.25, y=4.75, text="Potenciales", showarrow=False, font=dict(color='orange')),
+                dict(x=4.75, y=2.25, text="Mantenedores", showarrow=False, font=dict(color='gold')),
+                dict(x=2.25, y=2.25, text="Riesgos", showarrow=False, font=dict(color='red'))
             ],
-            height=600
+            height=600,
+            margin=dict(l=20, r=20, t=40, b=20)  # Margenes ajustados
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -1384,7 +2106,7 @@ else:  # Vista de Equipo
         st.subheader("📊 Análisis por Áreas Clave")
         st.caption("Evaluación detallada por categorías con recomendaciones personalizadas")
         
-        area_sel = st.selectbox("Seleccionar área para análisis", list(categorias.keys()))
+        area_sel = st.selectbox("Seleccionar área para análisis", list(categorias_detalladas.keys()))
         
         # Datos para el área seleccionada
         df_area = df_filtrado[['ruta', 'supervisor', area_sel, 'segmento']].sort_values(area_sel, ascending=False)
@@ -1393,7 +2115,7 @@ else:  # Vista de Equipo
         # Crear columna 'estado' basada en los valores del área seleccionada
         df_area['estado'] = pd.cut(
             df_area[area_sel],
-            bins=[0, 6, 8, 10],
+            bins=[0, 3.5, 4.5, 5],
             labels=["🔴 Crítico", "🟡 Aceptable", "🟢 Fuerte"]
         )
         
@@ -1462,14 +2184,14 @@ else:  # Vista de Equipo
         
         with col_stats2:
             st.markdown("##### Recomendaciones Generales")
-            if stats_area["Promedio"] < 6:
+            if stats_area["Promedio"] < 3.5:
                 st.error("**Área crítica** que requiere intervención inmediata")
                 st.markdown("""
                 - Talleres intensivos para todo el equipo
                 - Acompañamiento cercano de supervisores
                 - Revisión de procesos y herramientas
                 """)
-            elif stats_area["Promedio"] < 8:
+            elif stats_area["Promedio"] < 4.5:
                 st.warning("**Área a mejorar** con oportunidades de crecimiento")
                 st.markdown("""
                 - Capacitaciones específicas
@@ -1484,8 +2206,186 @@ else:  # Vista de Equipo
                 - Proyectos de innovación
                 """)
 
+    with tab4:
+        st.subheader("🧩 Matriz 9-Box de Talento")
+        
+        # Definir los límites para la matriz 9-box
+        desempeno_limites = [0, 3.5, 4.5, 5]
+        potencial_limites = [0, 3.5, 4.5, 5]
+        
+        # Crear la figura
+        fig = px.scatter(
+            df_filtrado,
+            x='puntaje_total',
+            y='potencial',
+            color='supervisor',
+            hover_name='ruta',
+            text='ruta',
+            labels={'puntaje_total': 'Desempeño', 'potencial': 'Potencial'},
+            title="Matriz 9-Box de Talento",
+            range_x=[0,5],
+            range_y=[0,5]
+        )
+        
+        # Añadir líneas y zonas
+        fig.update_layout(
+            shapes=[
+                # Líneas verticales
+                dict(type='line', x0=desempeno_limites[1], x1=desempeno_limites[1], y0=0, y1=5, line=dict(color='gray', dash='dot')),
+                dict(type='line', x0=desempeno_limites[2], x1=desempeno_limites[2], y0=0, y1=5, line=dict(color='gray', dash='dot')),
+                # Líneas horizontales
+                dict(type='line', x0=0, x1=5, y0=potencial_limites[1], y1=potencial_limites[1], line=dict(color='gray', dash='dot')),
+                dict(type='line', x0=0, x1=5, y0=potencial_limites[2], y1=potencial_limites[2], line=dict(color='gray', dash='dot')),
+                # Zonas coloreadas (semi-transparentes)
+                dict(type='rect', x0=desempeno_limites[2], x1=5, y0=potencial_limites[2], y1=5, line=dict(color='green'), opacity=0.1, fillcolor='green'),
+                dict(type='rect', x0=desempeno_limites[1], x1=desempeno_limites[2], y0=potencial_limites[2], y1=5, line=dict(color='limegreen'), opacity=0.1, fillcolor='limegreen'),
+                dict(type='rect', x0=desempeno_limites[2], x1=5, y0=potencial_limites[1], y1=potencial_limites[2], line=dict(color='limegreen'), opacity=0.1, fillcolor='limegreen'),
+                dict(type='rect', x0=0, x1=desempeno_limites[1], y0=potencial_limites[2], y1=5, line=dict(color='orange'), opacity=0.1, fillcolor='orange'),
+                dict(type='rect', x0=desempeno_limites[1], x1=desempeno_limites[2], y0=potencial_limites[1], y1=potencial_limites[2], line=dict(color='yellow'), opacity=0.1, fillcolor='yellow'),
+                dict(type='rect', x0=desempeno_limites[2], x1=5, y0=0, y1=potencial_limites[1], line=dict(color='yellow'), opacity=0.1, fillcolor='yellow'),
+                dict(type='rect', x0=0, x1=desempeno_limites[1], y0=potencial_limites[1], y1=potencial_limites[2], line=dict(color='yellow'), opacity=0.1, fillcolor='yellow'),
+                dict(type='rect', x0=desempeno_limites[1], x1=desempeno_limites[2], y0=0, y1=potencial_limites[1], line=dict(color='orangered'), opacity=0.1, fillcolor='orangered'),
+                dict(type='rect', x0=0, x1=desempeno_limites[1], y0=0, y1=potencial_limites[1], line=dict(color='red'), opacity=0.1, fillcolor='red')
+            ],
+            annotations=[
+                dict(x=4.75, y=4.75, text="Estrellas", showarrow=False, font=dict(size=14, color='green')),
+                dict(x=4, y=4.75, text="Potencial Alto", showarrow=False, font=dict(size=12, color='limegreen')),
+                dict(x=4.75, y=4, text="Desempeño Alto", showarrow=False, font=dict(size=12, color='limegreen')),
+                dict(x=1.75, y=4.75, text="Futuro Incierto", showarrow=False, font=dict(size=12, color='orange')),
+                dict(x=4, y=4, text="Core", showarrow=False, font=dict(size=14, color='gold')),
+                dict(x=4.75, y=1.75, text="Mantenedores", showarrow=False, font=dict(size=12, color='gold')),
+                dict(x=1.75, y=4, text="Riesgo Alto", showarrow=False, font=dict(size=12, color='orangered')),
+                dict(x=4, y=1.75, text="Riesgo Medio", showarrow=False, font=dict(size=12, color='orangered')),
+                dict(x=1.75, y=1.75, text="Riesgo Crítico", showarrow=False, font=dict(size=14, color='red'))
+            ],
+            height=700,
+            margin=dict(l=20, r=20, t=40, b=20)  # Margenes ajustados
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Resumen por cuadrante
+        st.subheader("📊 Distribución por Cuadrante")
+        
+        # Función para asignar cuadrantes
+        def asignar_cuadrante(row):
+            if row['puntaje_total'] >= desempeno_limites[2] and row['potencial'] >= potencial_limites[2]:
+                return "Estrellas"
+            elif row['puntaje_total'] >= desempeno_limites[2] and row['potencial'] >= potencial_limites[1]:
+                return "Desempeño Alto"
+            elif row['puntaje_total'] >= desempeno_limites[1] and row['potencial'] >= potencial_limites[2]:
+                return "Potencial Alto"
+            elif row['puntaje_total'] >= desempeno_limites[1] and row['potencial'] >= potencial_limites[1]:
+                return "Core"
+            elif row['puntaje_total'] >= desempeno_limites[2]:
+                return "Mantenedores"
+            elif row['potencial'] >= potencial_limites[2]:
+                return "Futuro Incierto"
+            elif row['potencial'] >= potencial_limites[1]:
+                return "Riesgo Alto"
+            elif row['puntaje_total'] >= desempeno_limites[1]:
+                return "Riesgo Medio"
+            else:
+                return "Riesgo Crítico"
+        
+        df_filtrado['cuadrante'] = df_filtrado.apply(asignar_cuadrante, axis=1)
+        
+        # Mostrar distribución
+        distribucion = df_filtrado['cuadrante'].value_counts().reset_index()
+        distribucion.columns = ['Cuadrante', 'Cantidad']
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.dataframe(distribucion, hide_index=True)
+        
+        with col2:
+            fig_pie = px.pie(distribucion, values='Cantidad', names='Cuadrante',
+                            color='Cuadrante',
+                            color_discrete_map={
+                                "Estrellas": "green",
+                                "Potencial Alto": "limegreen",
+                                "Desempeño Alto": "limegreen",
+                                "Core": "gold",
+                                "Mantenedores": "gold",
+                                "Futuro Incierto": "orange",
+                                "Riesgo Alto": "orangered",
+                                "Riesgo Medio": "orangered",
+                                "Riesgo Crítico": "red"
+                            })
+            st.plotly_chart(fig_pie, use_container_width=True)
+        
+        # Recomendaciones por cuadrante
+        st.subheader("🎯 Acciones Recomendadas por Cuadrante")
+        
+        recomendaciones_cuadrantes = {
+            "Estrellas": [
+                "Desarrollar para roles de liderazgo",
+                "Asignar proyectos estratégicos",
+                "Mentoría inversa (que enseñen a otros)",
+                "Plan de sucesión"
+            ],
+            "Potencial Alto": [
+                "Invertir en desarrollo acelerado",
+                "Mentoría con líderes senior",
+                "Rotación controlada para ganar experiencia",
+                "Metas desafiantes pero alcanzables"
+            ],
+            "Desempeño Alto": [
+                "Reconocimiento y retención",
+                "Especialización en su área",
+                "Participación en proyectos cross",
+                "Mentoría a colegas junior"
+            ],
+            "Core": [
+                "Desarrollo de habilidades específicas",
+                "Metas claras y alcanzables",
+                "Feedback frecuente",
+                "Programas de motivación"
+            ],
+            "Mantenedores": [
+                "Reconocer contribución actual",
+                "Entrenamiento para mejorar potencial",
+                "Rotación limitada para evitar estancamiento",
+                "Metas basadas en experiencia"
+            ],
+            "Futuro Incierto": [
+                "Análisis individualizado",
+                "Plan de mejora con plazos",
+                "Capacitación intensiva",
+                "Monitoreo cercano"
+            ],
+            "Riesgo Alto": [
+                "Planes de mejora con hitos",
+                "Capacitación básica",
+                "Acompañamiento diario/semanal",
+                "Evaluación periódica"
+            ],
+            "Riesgo Medio": [
+                "Entrenamiento específico",
+                "Metas a corto plazo",
+                "Feedback constante",
+                "Definir expectativas claras"
+            ],
+            "Riesgo Crítico": [
+                "Acción correctiva inmediata",
+                "Plazo definido para mejora",
+                "Evaluar continuidad en el puesto",
+                "Plan de contingencia"
+            ]
+        }
+        
+        cuadrante_seleccionado = st.selectbox("Ver acciones para:", distribucion['Cuadrante'])
+        
+        st.markdown(f"#### Acciones para {cuadrante_seleccionado}")
+        for accion in recomendaciones_cuadrantes.get(cuadrante_seleccionado, ["No se definieron acciones específicas"]):
+            st.markdown(f"- {accion}")
+
+    # Llamar a la función en tu sección de equipo
+    mostrar_matrices_talento()
+
 # =============================================
 # FOOTER
 # =============================================
 st.markdown("---")
-st.caption("Sistema de Gestión de perfiles comercial | © 2025 | Versión 2.1")
+st.caption("Sistema de Gestión Comercial 360 | © 2025 | Versión 2.1")
