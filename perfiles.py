@@ -26,7 +26,7 @@ def cargar_datos():
         # URLs de datos
         URL_EVAL = "https://docs.google.com/spreadsheets/d/1hcPBE_gkMmgn4JBjTrqbG3I_vzaFjRraX4sA5e4qKTE/export?format=csv"
         URL_SEG = "https://docs.google.com/spreadsheets/d/1p_vMUMIlprH-4ArY0kl_75XsUqBgIqV-CMEWs-6-zjw/export?format=csv"
-        URL_CUMPLIMIENTO = "D:/Desktop2/TRABAJO BD/PROYECTOS_DB/IM/PERFILESVDE/CUMPLIMIENTOS.xlsx"
+        URL_CUMPLIMIENTO = "https://docs.google.com/spreadsheets/d/1miD-cft9CKEjfAv5vHj7P1RB0_bvL9z2/export?format=xlsx"
 
         # Cargar datos de evaluación y seguimiento
         df_eval = pd.read_csv(URL_EVAL)
