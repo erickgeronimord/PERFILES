@@ -8,6 +8,7 @@ from fpdf import FPDF
 import base64
 import unicodedata
 from io import BytesIO
+import tempfile
 
 # =============================================
 # CONFIGURACIÓN INICIAL
@@ -1035,7 +1036,13 @@ def generar_pdf_perfil(vendedor, df_eval, df_seg, df_cump=None, df_info=None, ti
             pdf.cell(100, 8, txt="Firma Vendedor", ln=0)
             pdf.cell(90, 8, txt="Firma Supervisor", ln=1)
 
-        return pdf.output(dest='S')  # Ya devuelve bytes directamente
+        # Crear un archivo temporal
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmpfile:
+            pdf.output(tmpfile.name)
+            tmpfile.seek(0)
+            pdf_bytes = tmpfile.read()
+        
+        return pdf_bytes
 
     except Exception as e:
         st.error(f"Error al generar PDF: {str(e)}")
