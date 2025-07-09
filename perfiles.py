@@ -1961,33 +1961,6 @@ elif vista == "Individual":
             if not mejoras.empty:
                 st.warning(f"**Áreas a mejorar ({len(mejoras)}):** {', '.join(mejoras['Área'])}")
                 
-            # Botón para generar plan de formación
-            if st.button("📄 Generar Plan de Formación PDF"):
-                pdf = FPDF()
-                pdf.add_page()
-                pdf.set_font("Arial", size=12)
-                
-                pdf.cell(0, 10, f"Plan de Formación para {vendedor_sel}", ln=1, align='C')
-                pdf.ln(10)
-                
-                for _, row in df_recomendaciones.iterrows():
-                    pdf.set_font("Arial", 'B', 12)
-                    pdf.cell(0, 10, f"Área: {row['Área']} ({row['Puntaje']}/5) - {row['Severidad']}", ln=1)
-                    pdf.set_font("Arial", '', 10)
-                    
-                    for curso in row['Cursos Recomendados']:
-                        pdf.cell(10)  # Indentación
-                        pdf.cell(0, 8, f"- {curso}", ln=1)
-                    
-                    pdf.ln(5)
-                
-                pdf_bytes = pdf.output(dest='S').encode('latin-1')
-                st.download_button(
-                    label="⬇️ Descargar Plan de Formación",
-                    data=pdf_bytes,
-                    file_name=f"Plan_Formacion_{vendedor_sel}.pdf",
-                    mime="application/pdf"
-                )
         else:
             st.success("✅ Todas las áreas tienen un buen desempeño. No se requieren acciones de formación inmediatas.")
 
