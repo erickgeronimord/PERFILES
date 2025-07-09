@@ -1394,24 +1394,6 @@ if vista == "Resumen Ejecutivo":
        - Ajuste de rutas y asignaciones
     """)
     
-    # Sección 6: Contactos Clave (simulado - adaptar a tus datos)
-    st.markdown("---")
-    st.subheader("📞 Contactos Clave")
-    
-    contactos = [
-        {"Rol": "Supervisor", "Nombre": supervisor_sel, "Teléfono": "809-555-0101", "Email": f"{supervisor_sel.lower().replace(' ', '.')}@empresa.com"},
-        {"Rol": "RRHH Comercial", "Nombre": "Contacto RRHH", "Teléfono": "809-555-0202", "Email": "rrhh.comercial@empresa.com"},
-        {"Rol": "Soporte Técnico", "Nombre": "Equipo Soporte", "Teléfono": "809-555-0303", "Email": "soporte.comercial@empresa.com"},
-    ]
-    
-    st.dataframe(
-        pd.DataFrame(contactos),
-        hide_index=True,
-        use_container_width=True,
-        column_config={
-            "Email": st.column_config.LinkColumn("Email")
-        }
-    )
 
 elif vista == "Individual":
     st.header("👤 Vista Individual")
