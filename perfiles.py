@@ -7,6 +7,7 @@ from datetime import datetime
 from fpdf import FPDF
 import base64
 import unicodedata
+from io import BytesIO
 
 # =============================================
 # CONFIGURACIÓN INICIAL
@@ -1036,10 +1037,14 @@ def generar_pdf_perfil(vendedor, df_eval, df_seg, df_cump=None, df_info=None, ti
 
         return pdf.output(dest='S')  # Ya devuelve bytes directamente
 
+        buffer = BytesIO()
+        pdf.output(buffer)
+        buffer.seek(0)
+        return buffer
+        
     except Exception as e:
         st.error(f"Error al generar PDF: {str(e)}")
         return None
-    
 # =============================================
 # INTERFAZ PRINCIPAL
 # =============================================
@@ -1557,11 +1562,11 @@ elif vista == "Individual":
         
         with col_pdf1:
             if st.button("📄 Generar Perfil PDF"):
-                pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "general")
-                if pdf_bytes:
+                pdf_buffer = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "general")
+                if pdf_buffer:
                     st.download_button(
                         label="⬇️ Descargar Perfil Completo",
-                        data=pdf_bytes,  # Ya son bytes, no necesitas encode
+                        data=pdf_buffer,
                         file_name=f"Perfil_{vendedor_sel}.pdf",
                         mime="application/pdf"
                     )
