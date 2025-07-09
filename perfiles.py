@@ -1035,16 +1035,12 @@ def generar_pdf_perfil(vendedor, df_eval, df_seg, df_cump=None, df_info=None, ti
             pdf.cell(100, 8, txt="Firma Vendedor", ln=0)
             pdf.cell(90, 8, txt="Firma Supervisor", ln=1)
 
-        return pdf.output(dest='S')  # Ya devuelve bytes directamente
-
-        buffer = BytesIO()
-        pdf.output(buffer)
-        buffer.seek(0)
-        return buffer
+        return pdf.output(dest='S').encode('latin-1')
         
     except Exception as e:
         st.error(f"Error al generar PDF: {str(e)}")
         return None
+        
 # =============================================
 # INTERFAZ PRINCIPAL
 # =============================================
@@ -1562,11 +1558,11 @@ elif vista == "Individual":
         
         with col_pdf1:
             if st.button("📄 Generar Perfil PDF"):
-                pdf_buffer = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "general")
-                if pdf_buffer:
+                pdf_bytes = generar_pdf_perfil(vendedor_sel, df_eval, df_seg_orig, df_cump_orig, df_info_orig, "general")
+                if pdf_bytes:
                     st.download_button(
                         label="⬇️ Descargar Perfil Completo",
-                        data=pdf_buffer,
+                        data=pdf_bytes,
                         file_name=f"Perfil_{vendedor_sel}.pdf",
                         mime="application/pdf"
                     )
