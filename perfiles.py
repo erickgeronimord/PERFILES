@@ -216,12 +216,11 @@ def procesar_datos_detallados(df_eval):
     
     # Segmentación del equipo (como en tu código original)
     condiciones = [
-        (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] >= 4.5),
-        (df_eval['puntaje_total'] >= 3.5) & (df_eval['potencial'] < 3.0),
-        (df_eval['puntaje_total'] < 3.5) & (df_eval['potencial'] >= 3.0),
-        (df_eval['puntaje_total'] < 2.5) & (df_eval['potencial'] < 2.5),
+        (df_eval['puntaje_total'] >= 4.8) & (df_eval['potencial'] >= 4.8),
+        (df_eval['puntaje_total'] >= 4.1) & (df_eval['potencial'] < 2.9),
+        (df_eval['puntaje_total'] < 4.8) & (df_eval['potencial'] >= 2.9),
+        (df_eval['puntaje_total'] < 2.9) & (df_eval['potencial'] < 2.9)
     ]
-    
     opciones = [
         "🟢 Alto Desempeño & Alto Potencial",
         "🟡 Buen Desempeño pero Bajo Potencial",
@@ -242,13 +241,11 @@ def mostrar_resumen_desempeno(vendedor_sel, df_eval):
     # Mapeo de colores según puntaje
     def obtener_color(puntaje):
         if puntaje >= 4.5:
-            return "#2ecc71"  # 🟢 Verde (Alto desempeño o potencial)
-        elif puntaje >= 3.5:
-            return "#f1c40f"  # 🟡 Amarillo (Desempeño aceptable, pero mejorar)
-        elif puntaje >= 2.5:
-            return "#e67e22"  # 🟠 Naranja (Riesgo medio, mixto)
+            return "#2ecc71"  # Verde
+        elif puntaje >= 3.3:
+            return "#f39c12"  # Naranja
         else:
-            return "#e74c3c"  # 🔴 Rojo (Crítico)
+            return "#e74c3c"  # Rojo
     
     # --- Contenedor principal con estilo profesional ---
     with st.container():
@@ -657,12 +654,11 @@ def procesar_datos(df_eval):
         
         # Segmentación del equipo
         condiciones = [
-            (df_eval['puntaje_total'] >= 4.5) & (df_eval['potencial'] >= 4.5),
-            (df_eval['puntaje_total'] >= 3.5) & (df_eval['potencial'] < 3.0),
-            (df_eval['puntaje_total'] < 3.5) & (df_eval['potencial'] >= 3.0),
-            (df_eval['puntaje_total'] < 2.5) & (df_eval['potencial'] < 2.5),
+            (df_eval['puntaje_total'] >= 4.8) & (df_eval['potencial'] >= 4.8),
+            (df_eval['puntaje_total'] >= 4.1) & (df_eval['potencial'] < 2.9),
+            (df_eval['puntaje_total'] < 4.8) & (df_eval['potencial'] >= 2.9),
+            (df_eval['puntaje_total'] < 2.9) & (df_eval['potencial'] < 2.9)
         ]
-        
         opciones = [
             "🟢 Alto Desempeño & Alto Potencial",
             "🟡 Buen Desempeño pero Bajo Potencial",
@@ -714,14 +710,14 @@ def generar_alertas(df_eval, df_cump):
     
     # 2. Alertas por alto potencial sin plan
     if 'potencial' in df_eval.columns:
-        df_alto_potencial = df_eval[df_eval['potencial'] >= 4.5]
+        df_alto_potencial = df_eval[df_eval['potencial'] >= 4.8]
         for _, row in df_alto_potencial.iterrows():
             if pd.isna(row.get('plan_desarrollo', None)) or str(row.get('plan_desarrollo', '')).strip() == '':
                 alertas.append({
                     "tipo": "🟡 Alto potencial sin plan",
-                    "mensaje": f"{row['ruta']} tiene alto potencial (≥4.5) pero no cuenta con un plan de desarrollo asignado.",
-                    "prioridad": "Alta",
-                    "accion": "Diseñar e implementar un plan de desarrollo individual con metas claras. Asignar mentor."
+                    "mensaje": f"{row['ruta']} tiene alto potencial pero no tiene plan de desarrollo asignado",
+                    "prioridad": "Media",
+                    "accion": "Asignar mentor y plan de desarrollo"
                 })
     
     # 3. Alertas por equipos en riesgo
@@ -788,10 +784,10 @@ def generar_recomendaciones(vendedor, df_eval, categorias):
     """Genera recomendaciones de formación personalizadas"""
     datos = df_eval[df_eval['ruta'] == vendedor].iloc[0]
     recomendaciones = []
-        
-    # Umbrales revisados
-    UMBRAL_CRITICO = 2.5
-    UMBRAL_MEJORA = 3.5
+    
+    # Umbrales para determinar necesidades
+    UMBRAL_CRITICO = 2.3
+    UMBRAL_MEJORA = 3.8
     
     for categoria, columnas in categorias.items():
         puntaje = datos[categoria]
@@ -830,16 +826,6 @@ def generar_recomendaciones(vendedor, df_eval, categorias):
                 "Severidad": severidad,
                 "Cursos Recomendados": cursos,
                 "Prioridad": "Media"
-            })
-    
-        else:
-            # Opcional: incluir estado positivo
-            recomendaciones.append({
-                "Área": categoria,
-                "Puntaje": puntaje,
-                "Severidad": "🟢 Bueno",
-                "Cursos Recomendados": ["Reforzamiento opcional", "Mentoría a pares"],
-                "Prioridad": "Baja"
             })
     
     return pd.DataFrame(recomendaciones)
@@ -1109,15 +1095,12 @@ if vista == "Resumen Ejecutivo":
     for i, area in enumerate(categorias_lista[:mitad]):
         with cols_fila1[i]:
             promedio = avg_areas[area]
-            if promedio >= 4.5:
+            if promedio >= 4.8:
                 color = "green"
                 emoji = "✅"
-            elif promedio >= 3.5:
-                color = "#f1c40f"  # Amarillo
+            elif promedio >= 3.3:
+                color = "orange"
                 emoji = "⚠️"
-            elif promedio >= 2.5:
-                color = "#e67e22"  # Naranja
-                emoji = "🟠"
             else:
                 color = "red"
                 emoji = "❌"
@@ -1141,15 +1124,12 @@ if vista == "Resumen Ejecutivo":
     for i, area in enumerate(categorias_lista[mitad:]):
         with cols_fila2[i]:
             promedio = avg_areas[area]
-            if promedio >= 4.5:
+            if promedio >= 4.8:
                 color = "green"
                 emoji = "✅"
-            elif promedio >= 3.5:
-                color = "#f1c40f"  # Amarillo
+            elif promedio >= 3.3:
+                color = "orange"
                 emoji = "⚠️"
-            elif promedio >= 2.5:
-                color = "#e67e22"  # Naranja
-                emoji = "🟠"
             else:
                 color = "red"
                 emoji = "❌"
@@ -1473,35 +1453,21 @@ elif vista == "Individual":
     # Mostrar resumen de desempeño detallado
         mostrar_resumen_desempeno(vendedor_sel, df_eval)
         
-    # Nueva sección: Potencial para supervisor
+        # Nueva sección: Potencial para supervisor
         st.subheader("🔍 Potencial para Supervisor")
-        
-        potencial_val = eval_sel['potencial']
-        habilidades_val = eval_sel.get('HABILIDADES', 0)
-        
-        # Definición basada en umbrales consistentes
-        if potencial_val >= 4.5 and habilidades_val >= 4.5:
-            potencial_supervisor = "✅ Sí"
-            nivel = "Alto"
-        elif potencial_val >= 3.5:
-            potencial_supervisor = "⚠️ Con desarrollo"
-            nivel = "Medio"
-        else:
-            potencial_supervisor = "❌ No"
-            nivel = "Bajo"
+        potencial_supervisor = "Sí" if (eval_sel['potencial'] >= 4.8 and eval_sel['HABILIDADES'] >= 4.8) else "Con desarrollo" if (eval_sel['potencial'] >= 4) else "No"
         
         col_pot1, col_pot2 = st.columns(2)
         with col_pot1:
             st.metric("¿Tiene potencial para ser supervisor?", potencial_supervisor)
         
         with col_pot2:
-            if nivel == "Alto":
+            if potencial_supervisor == "Sí":
                 st.success("Este colaborador muestra las competencias necesarias para asumir un rol de supervisión.")
-            elif nivel == "Medio":
-                st.warning("Podría desarrollarlas con un plan de formación adecuado y mentoría.")
+            elif potencial_supervisor == "Con desarrollo":
+                st.warning("Podría desarrollar las competencias necesarias con un plan de formación adecuado.")
             else:
                 st.info("Actualmente no muestra el perfil requerido para supervisión.")
-
         
         # Métricas Claves para HHRR
         st.markdown("---")
@@ -1531,34 +1497,28 @@ elif vista == "Individual":
 
         with cols_hr[2]:
             puntaje_total = eval_sel.get('puntaje_total', 0)
-            if puntaje_total >= 4.5:
+            if puntaje_total >= 4.8:
                 consistencia = "Alta"
                 color = "green"
-            elif puntaje_total >= 3.5:
+            elif puntaje_total >= 3.3:
                 consistencia = "Media"
-                color = "#f1c40f"
-            elif puntaje_total >= 2.5:
-                consistencia = "Baja"
-                color = "#e67e22"
+                color = "orange"
             else:
-                consistencia = "Crítica"
+                consistencia = "Baja"
                 color = "red"
             st.markdown("🔄 **Consistencia**")
             st.markdown(f"<span style='color:{color}; font-size: 20px'>{consistencia}</span>", unsafe_allow_html=True)
 
         with cols_hr[3]:
             potencial = eval_sel.get('potencial', 0)
-            if potencial >= 4.5:
+            if potencial >= 4.8:
                 nivel_potencial = "Alto"
                 color = "green"
-            elif potencial >= 3.5:
+            elif potencial >= 3.3:
                 nivel_potencial = "Medio"
-                color = "#f1c40f"
-            elif potencial >= 2.5:
-                nivel_potencial = "Bajo"
-                color = "#e67e22"
+                color = "orange"
             else:
-                nivel_potencial = "Crítico"
+                nivel_potencial = "Bajo"
                 color = "red"
             st.markdown("🚀 **Potencial**")
             st.markdown(f"<span style='color:{color}; font-size: 20px'>{nivel_potencial}</span>", unsafe_allow_html=True)
@@ -1575,23 +1535,15 @@ elif vista == "Individual":
                 "Alineamiento Cultural"
             ],
             "Evaluación": [
-                "Alto" if puntaje_total >= 4.5 else "Medio" if puntaje_total >= 3.5 else "Bajo" if puntaje_total >= 2.5 else "Crítico",
+                "Alto" if puntaje_total >= 4.8 else "Medio" if puntaje_total >= 3.3 else "Bajo",
                 nivel_potencial,
                 tendencia if 'tendencia' in locals() else "N/D",
                 consistencia,
-                "Alto"  # o puedes personalizarlo si lo mides en tu evaluación
+                "Alto"
             ],
             "Recomendación": [
-                "Desarrollar/Liderar" if puntaje_total >= 4.5 else
-                "Capacitar/Monitorear" if puntaje_total >= 3.5 else
-                "Plan de mejora urgente" if puntaje_total >= 2.5 else
-                "Evaluar permanencia",
-                
-                "Invertir" if potencial >= 4.5 else
-                "Desarrollar progresivamente" if potencial >= 3.5 else
-                "Monitorear o reubicar" if potencial >= 2.5 else
-                "Evitar asignaciones críticas",
-        
+                "Mantener/Desarrollar" if puntaje_total >= 4.8 else "Capacitar" if puntaje_total >= 3.3 else "Revisar",
+                "Invertir en desarrollo" if potencial >= 4.8 else "Monitorear" if potencial >= 3.3 else "Limitar inversión",
                 "Reforzar positivamente" if 'tendencia' in locals() and tendencia == "↑ Mejorando" else "Intervenir",
                 "Estable" if consistencia == "Alta" else "Volátil",
                 "Retener"
@@ -1871,33 +1823,32 @@ elif vista == "Individual":
         # Sección de recomendaciones específicas
         st.markdown("### 📚 Recomendaciones Específicas de Formación")
         
-        if eval_sel['HABILIDADES'] < 3.5:
+        if eval_sel['HABILIDADES'] < 3.3:
             st.markdown("""
             #### 🧠 Habilidades Blandas
             - **Curso recomendado:** Comunicación Efectiva y Manejo de Objeciones
-            - **Duración:** 8 horas  
-            - **Modalidad:** Taller práctico  
+            - **Duración:** 8 horas
+            - **Modalidad:** Taller práctico
             - **Objetivo:** Mejorar capacidad de escucha activa y manejo de objeciones
             """)
         
-        if eval_sel['CAPACIDAD DE AUTOGESTIÓN'] < 3.5:
+        if eval_sel['CAPACIDAD DE AUTOGESTIÓN'] < 3.3:
             st.markdown("""
             #### 🦅 Autonomía
-            - **Curso recomendado:** Toma de Decisiones y Resolución de Problemas  
-            - **Duración:** 12 horas  
-            - **Modalidad:** Online con casos prácticos  
+            - **Curso recomendado:** Toma de Decisiones y Resolución de Problemas
+            - **Duración:** 12 horas
+            - **Modalidad:** Online con casos prácticos
             - **Objetivo:** Desarrollar pensamiento crítico y autonomía
             """)
         
-        if eval_sel['HABILIDADES'] < 3.5:
+        if eval_sel['HABILIDADES'] < 3.3:
             st.markdown("""
             #### 💻 Herramientas Digitales
-            - **Curso recomendado:** Dominio de Herramientas Comerciales  
-            - **Duración:** 16 horas  
-            - **Modalidad:** Presencial con ejercicios prácticos  
+            - **Curso recomendado:** Dominio de Herramientas Comerciales
+            - **Duración:** 16 horas
+            - **Modalidad:** Presencial con ejercicios prácticos
             - **Objetivo:** Optimizar uso de herramientas tecnológicas
             """)
-
         
         # Plan de acción por segmento
         st.markdown("---")
@@ -1954,24 +1905,24 @@ elif vista == "Individual":
         timeline_data = {
             "Actividad": [
                 "Evaluación inicial",
-                "Propuesta de Formacion",
+                "Formación específica",
                 "Seguimiento 1:1",
                 "Evaluación de progreso",
                 "Plan de carrera"
             ],
             "Fecha": [
-                "Julio 2025",
-                "Julio 2025",
-                "Agosto 2025",
+                "Pordefinir 2025",
+                "Pordefinir 2025",
+                "Pordefinir 2025",
                 "Pordefinir 2025",
                 "Pordefinir 2026"
             ],
             "Responsable": [
-                "Supervisores",
-                "Supervisores/Gerencia Co.",
+                "RRHH",
+                "Gerencial Cocmercial",
                 "Supervisores",
                 "RRHH",
-                "RRHH/Gerencia Co."
+                "Gerencial Cocmercial"
             ]
         }
 
@@ -2108,11 +2059,10 @@ else:  # Vista de Equipo
         
         st.markdown("""
         #### Interpretación de la Matriz:
-        - **🟢 Estrellas (Alto desempeño & alto potencial):** Futuros líderes, asignar proyectos estratégicos, planes de sucesión.
-        - **🟡 Mantenedores (Buen desempeño, bajo potencial):** Pilar operativo actual. Requieren reconocimiento y estabilidad.
-        - **🟠 Potenciales (Alto potencial, bajo desempeño):** Invertir en desarrollo, mentoría y seguimiento cercano.
-        - **🔴 Riesgos (Bajo desempeño & bajo potencial):** Requieren intervención inmediata. Evaluar continuidad o plan de mejora.
-        - **🧩 Inconsistentes (Perfil mixto):** Necesitan evaluación individual, pueden estar en transición o con variables externas.
+        - **🟢 Estrellas (Alto desempeño, alto potencial):** Futuros líderes, asignar proyectos especiales
+        - **🟡 Potenciales (Bajo desempeño, alto potencial):** Invertir en desarrollo, mentoría
+        - **🟠 Mantenedores (Alto desempeño, bajo potencial):** Clave para resultados actuales
+        - **🔴 Riesgos (Bajo desempeño, bajo potencial):** Planes de mejora o salida
         """)
     
     with tab3:
@@ -2197,14 +2147,14 @@ else:  # Vista de Equipo
         
         with col_stats2:
             st.markdown("##### Recomendaciones Generales")
-            if stats_area["Promedio"] < 2.5:
+            if stats_area["Promedio"] < 2.3:
                 st.error("**Área crítica** que requiere intervención inmediata")
                 st.markdown("""
                 - Talleres intensivos para todo el equipo
                 - Acompañamiento cercano de supervisores
                 - Revisión de procesos y herramientas
                 """)
-            elif stats_area["Promedio"] < 3.5:
+            elif stats_area["Promedio"] < 3.7:
                 st.warning("**Área a mejorar** con oportunidades de crecimiento")
                 st.markdown("""
                 - Capacitaciones específicas
