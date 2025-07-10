@@ -1905,24 +1905,24 @@ elif vista == "Individual":
         timeline_data = {
             "Actividad": [
                 "Evaluación inicial",
-                "Formación específica",
+                "Recomendacion de formación específica",
                 "Seguimiento 1:1",
                 "Evaluación de progreso",
                 "Plan de carrera"
             ],
             "Fecha": [
-                "Pordefinir 2025",
-                "Pordefinir 2025",
-                "Pordefinir 2025",
-                "Pordefinir 2025",
+                "Julio 2025",
+                "Julio 2025",
+                "Agosto 2025",
+                "Ago-Sep-Oct 2025",
                 "Pordefinir 2026"
             ],
             "Responsable": [
-                "RRHH",
-                "Gerencial Cocmercial",
                 "Supervisores",
-                "RRHH",
-                "Gerencial Cocmercial"
+                "Supervisores/Gerencia Co.",
+                "Supervisores",
+                "RRHH/Gerencia Co.",
+                "RRHH/Gerencia Co."
             ]
         }
 
