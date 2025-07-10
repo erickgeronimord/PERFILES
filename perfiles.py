@@ -1889,7 +1889,7 @@ elif vista == "Individual":
             - **Objetivo:** Desarrollar pensamiento crítico y autonomía
             """)
         
-        if eval_sel['HERRAMIENTAS'] < 3.5:
+        if eval_sel['HABILIDADES'] < 3.5:
             st.markdown("""
             #### 💻 Herramientas Digitales
             - **Curso recomendado:** Dominio de Herramientas Comerciales  
